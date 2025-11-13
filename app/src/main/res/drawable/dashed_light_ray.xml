@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dotted light ray path connecting quest map levels -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Each dash is a light ray segment -->
+    <item android:top="0dp" android:bottom="12dp">
+        <shape android:shape="rectangle">
+            <size android:width="6dp" android:height="10dp"/>
+            <!-- Gradient creates glowing light effect -->
+            <gradient
+                android:angle="90"
+                android:startColor="#FFFFFFFF"
+                android:centerColor="#CCFFFFFF"
+                android:endColor="#00FFFFFF"
+                android:type="linear" />
+            <corners android:radius="3dp"/>
+        </shape>
+    </item>
+</layer-list>

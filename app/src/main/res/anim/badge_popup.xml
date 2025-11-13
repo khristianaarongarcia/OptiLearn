@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Badge Pop-up Animation with bounce effect -->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="800"
+    android:fillAfter="true">
+    
+    <!-- Scale from 0 to overshoot (1.2) then settle to 1.0 -->
+    <scale
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
+        android:toXScale="1.2"
+        android:toYScale="1.2"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:duration="400"
+        android:interpolator="@android:anim/overshoot_interpolator" />
+    
+    <!-- Settle back to normal size -->
+    <scale
+        android:fromXScale="1.2"
+        android:fromYScale="1.2"
+        android:toXScale="1.0"
+        android:toYScale="1.0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="400"
+        android:duration="200"
+        android:interpolator="@android:anim/decelerate_interpolator" />
+    
+    <!-- Rotate for extra flair -->
+    <rotate
+        android:fromDegrees="-15"
+        android:toDegrees="15"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:duration="300"
+        android:interpolator="@android:anim/cycle_interpolator"
+        android:cycles="2" />
+    
+    <!-- Fade in -->
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="300" />
+</set>

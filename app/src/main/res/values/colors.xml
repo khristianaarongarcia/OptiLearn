@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Original Material Colors (Keep for compatibility) -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Game Theme - Vibrant & Fun Colors -->
+    <color name="primary">#6C5CE7</color>              <!-- Modern Purple -->
+    <color name="primary_dark">#5849BE</color>          <!-- Deep Purple -->
+    <color name="primary_light">#A29BFE</color>         <!-- Light Purple -->
+    <color name="accent">#FF6348</color>                <!-- Coral Red Accent -->
+    <color name="accent_light">#FF7979</color>          <!-- Light Coral -->
+    <color name="accent_dark">#EE5A24</color>           <!-- Dark Orange -->
+    
+    <!-- Secondary Colors for Variety -->
+    <color name="secondary_blue">#00A8FF</color>        <!-- Electric Blue -->
+    <color name="secondary_green">#00D2D3</color>       <!-- Turquoise -->
+    <color name="secondary_pink">#FD79A8</color>        <!-- Soft Pink -->
+    <color name="secondary_yellow">#FDCB6E</color>      <!-- Sunny Yellow -->
+    <color name="secondary_cyan">#74B9FF</color>        <!-- Sky Blue -->
+    <color name="secondary_purple">#A29BFE</color>      <!-- Lavender -->
+    <color name="secondary_orange">#FAB1A0</color>      <!-- Peach -->
+    
+    <!-- Gradient Colors - Modern Game Style -->
+    <color name="gradient_purple_start">#A29BFE</color>
+    <color name="gradient_purple_end">#6C5CE7</color>
+    <color name="gradient_blue_start">#74B9FF</color>
+    <color name="gradient_blue_end">#0984E3</color>
+    <color name="gradient_orange_start">#FAB1A0</color>
+    <color name="gradient_orange_end">#FF6348</color>
+    <color name="gradient_green_start">#55EFC4</color>
+    <color name="gradient_green_end">#00B894</color>
+    <color name="gradient_pink_start">#FD79A8</color>
+    <color name="gradient_pink_end">#E84393</color>
+    <color name="gradient_yellow_start">#FFEAA7</color>
+    <color name="gradient_yellow_end">#FDCB6E</color>
+    <color name="gradient_red_start">#FF7675</color>
+    <color name="gradient_red_end">#D63031</color>
+    <color name="gradient_teal_start">#81ECEC</color>
+    <color name="gradient_teal_end">#00CEC9</color>
+    
+    <!-- Background Colors -->
+    <color name="background">#F5F6FA</color>            <!-- Modern Light Gray -->
+    <color name="background_dark">#2D3436</color>       <!-- Dark Charcoal -->
+    <color name="surface">#FFFFFF</color>               <!-- White Surface -->
+    <color name="surface_light">#DFE6E9</color>         <!-- Light Blue Gray -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_elevated">#FAFAFA</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>          <!-- Dark Gray -->
+    <color name="text_secondary">#757575</color>        <!-- Medium Gray -->
+    <color name="text_dark">#212121</color>
+    <color name="text_light">#FFFFFF</color>
+    <color name="text_hint">#9E9E9E</color>
+    
+    <!-- Game State Colors -->
+    <color name="correct_answer">#00B894</color>        <!-- Green Success -->
+    <color name="wrong_answer">#D63031</color>          <!-- Red Error -->
+    <color name="locked_level">#B2BEC3</color>          <!-- Gray -->
+    <color name="unlocked_level">#0984E3</color>        <!-- Blue -->
+    <color name="completed_level">#00B894</color>       <!-- Green -->
+    <color name="current_level">#6C5CE7</color>         <!-- Purple -->
+    <color name="success">#00B894</color>               <!-- Green -->
+    <color name="error">#D63031</color>                 <!-- Red -->
+    <color name="warning">#FDCB6E</color>               <!-- Yellow -->
+    <color name="info">#74B9FF</color>                  <!-- Blue -->
+    
+    <!-- Special Effect Colors -->
+    <color name="gold">#FFD700</color>                  <!-- Gold -->
+    <color name="silver">#C0C0C0</color>                <!-- Silver -->
+    <color name="bronze">#CD7F32</color>                <!-- Bronze -->
+    <color name="yellow_star">#FFC107</color>           <!-- Yellow Star -->
+    <color name="xp_bar">#7C4DFF</color>                <!-- Purple XP -->
+    <color name="streak_fire">#FF6E40</color>           <!-- Orange Fire -->
+    <color name="combo_glow">#FFD740</color>            <!-- Yellow Glow -->
+    
+    <!-- Semi-transparent Overlays -->
+    <color name="overlay_dark">#80000000</color>        <!-- 50% Black -->
+    <color name="overlay_light">#80FFFFFF</color>       <!-- 50% White -->
+    <color name="shadow">#40000000</color>              <!-- 25% Black -->
+    
+    <!-- Badge Colors (for different achievement levels) -->
+    <color name="badge_bronze">#CD7F32</color>
+    <color name="badge_silver">#C0C0C0</color>
+    <color name="badge_gold">#FFD700</color>
+    <color name="badge_platinum">#E5E4E2</color>
+    <color name="badge_diamond">#B9F2FF</color>
+</resources>

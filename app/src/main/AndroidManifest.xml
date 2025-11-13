@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.OptiLearn">
+        
+        <!-- Main Menu Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.OptiLearn">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Quest Map Activity -->
+        <activity
+            android:name=".QuestMapActivity"
+            android:label="@string/quest_map_title"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.OptiLearn" />
+        
+        <!-- Quiz Activity -->
+        <activity
+            android:name=".QuizActivity"
+            android:label="Quiz"
+            android:theme="@style/Theme.OptiLearn" />
+        
+        <!-- Result Activity -->
+        <activity
+            android:name=".ResultActivity"
+            android:label="@string/result_title"
+            android:theme="@style/Theme.OptiLearn" />
+        
+        <!-- Trophy Room Activity -->
+        <activity
+            android:name=".TrophyRoomActivity"
+            android:label="Trophy Room"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.OptiLearn" />
+        
+        <!-- Settings Activity -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.OptiLearn" />
+            
+    </application>
+
+</manifest>

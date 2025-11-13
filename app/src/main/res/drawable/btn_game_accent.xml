@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Accent button (orange) with gradient -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item
+        android:top="2dp"
+        android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp" />
+            <solid android:color="@color/shadow" />
+        </shape>
+    </item>
+    
+    <!-- Button -->
+    <item
+        android:top="0dp"
+        android:bottom="4dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp" />
+            <gradient
+                android:angle="90"
+                android:startColor="@color/gradient_orange_start"
+                android:endColor="@color/gradient_orange_end"
+                android:type="linear" />
+        </shape>
+    </item>
+</layer-list>
