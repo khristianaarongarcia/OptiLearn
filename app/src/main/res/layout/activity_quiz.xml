@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_purple"
+    android:background="@drawable/background_mainmenu"
     tools:context=".view.QuizActivity">
 
     <!-- Modern Toolbar with Menu -->
@@ -35,13 +35,46 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/pixelated_pusab"
                 android:maxLines="1"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/layoutQuizInfo"
                 app:layout_constraintEnd_toStartOf="@id/tvHintCount"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_goneMarginEnd="16dp" />
+
+            <!-- Question Counter and Timer -->
+            <LinearLayout
+                android:id="@+id/layoutQuizInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvHintCount"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvToolbarTitle">
+
+                <TextView
+                    android:id="@+id/tvQuestionCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1/10"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/pixelated_display"
+                    android:layout_marginEnd="12dp" />
+
+                <TextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⏱ 00:60"
+                    android:textSize="14sp"
+                    android:textColor="@color/correct_answer"
+                    android:fontFamily="@font/pixelated_display" />
+
+            </LinearLayout>
 
             <!-- Hint Counter (Left of Menu Icon) -->
             <TextView
@@ -51,25 +84,25 @@
                 android:text="💡 3"
                 android:textSize="16sp"
                 android:textColor="@color/white"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="@font/pixelated_display"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnMenu"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="12dp" />
 
             <!-- Hamburger Menu Icon (Right Edge) -->
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnMenu"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Menu"
-                android:padding="8dp"
-                android:src="@drawable/ic_menu"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/hamburger_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,58 +124,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <!-- Progress Info Card - Modern Design -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardProgress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/white"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="8dp"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="20dp">
-
-                    <!-- Question Progress -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvQuestionProgress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Question 1 of 5"
-                            android:textColor="@color/primary"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:fontFamily="sans-serif-black" />
-
-                        <ProgressBar
-                            android:id="@+id/progressBar"
-                            style="?android:attr/progressBarStyleHorizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="8dp"
-                            android:max="5"
-                            android:progress="1"
-                            android:progressBackgroundTint="@color/surface_light"
-                            android:progressTint="@color/primary" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
             <!-- Question Card - Eye-catching Design -->
             <com.google.android.material.card.MaterialCardView
@@ -179,7 +160,7 @@
                         android:textColor="@color/text_primary"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        android:fontFamily="sans-serif-black" />
+                        android:fontFamily="sans-serif" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -205,7 +186,7 @@
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/btn_quiz_option"
                     android:elevation="4dp"
-                    android:fontFamily="sans-serif-bold"
+                    android:fontFamily="@font/pixelated_display"
                     android:gravity="start|center_vertical"
                     android:maxLines="3"
                     android:minHeight="64dp"
@@ -231,7 +212,7 @@
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/btn_quiz_option"
                     android:elevation="4dp"
-                    android:fontFamily="sans-serif-bold"
+                    android:fontFamily="@font/pixelated_display"
                     android:gravity="start|center_vertical"
                     android:maxLines="3"
                     android:minHeight="64dp"
@@ -257,7 +238,7 @@
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/btn_quiz_option"
                     android:elevation="4dp"
-                    android:fontFamily="sans-serif-bold"
+                    android:fontFamily="@font/pixelated_display"
                     android:gravity="start|center_vertical"
                     android:maxLines="3"
                     android:minHeight="64dp"
@@ -282,7 +263,7 @@
                     android:autoSizeTextType="uniform"
                     android:background="@drawable/btn_quiz_option"
                     android:elevation="4dp"
-                    android:fontFamily="sans-serif-bold"
+                    android:fontFamily="@font/pixelated_display"
                     android:gravity="start|center_vertical"
                     android:maxLines="3"
                     android:minHeight="64dp"
@@ -359,21 +340,20 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <!-- Use OptiHint Button -->
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnUseOptiHint"
             android:layout_width="0dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/btn_game_accent"
-            android:elevation="6dp"
-            android:fontFamily="sans-serif-bold"
-            android:stateListAnimator="@null"
-            android:text="USE HINT"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="30dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="10dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_use_opti_hint"
+            android:maxHeight="@dimen/hint_button_max_height"
+            android:minHeight="@dimen/hint_button_min_height"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/usehint_btn" />
 
         <!-- Next Button -->
         <com.google.android.material.button.MaterialButton
@@ -393,6 +373,24 @@
             app:cornerRadius="30dp"
             android:layout_marginStart="10dp" />
     </LinearLayout>
+
+    <!-- Time Bonus Popup -->
+    <TextView
+        android:id="@+id/tvTimeBonus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+5"
+        android:textSize="16sp"
+        android:textColor="@color/correct_answer"
+        android:fontFamily="@font/pixelated_display"
+        android:textStyle="bold"
+        android:elevation="15dp"
+        android:visibility="gone"
+        android:alpha="0"
+        app:layout_constraintTop_toTopOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toEndOf="@id/toolbar"
+        android:layout_marginStart="-60dp" />
 
     <!-- Loading Animation -->
     <com.airbnb.lottie.LottieAnimationView
@@ -467,7 +465,7 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="20dp"
             app:cardElevation="8dp"
-            android:backgroundTint="#FF6B35"
+            android:backgroundTint="@color/streak_fire"
             android:layout_marginTop="8dp">
 
             <TextView

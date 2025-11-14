@@ -198,7 +198,7 @@ app/src/main/res/
 - **Search Keywords**: "clock tick sound", "timer countdown sfx", "game timer tick", "time running out"
 - **Recommended Sources**: Freesound.org
 
-### 2.11 Timer Expire Sound
+### 2.11 Timer Expire Sound (Not Needed)
 - **File**: `sfx_timer_expire.mp3`
 - **Description**: Buzzer or alarm sound (not harsh)
 - **Duration**: 1 second
@@ -229,7 +229,7 @@ app/src/main/res/
 - **Search Keywords**: "thinking music instrumental", "quiz game background", "study music loop", "concentration game music"
 - **Recommended Sources**: Free Music Archive, Incompetech, Bensound
 
-### 3.3 Result/Victory Music
+### 3.3 Result/Victory Music (Not Needed)
 - **File**: `music_victory.mp3`
 - **Description**: Triumphant, celebratory instrumental
 - **Duration**: 30-60 seconds (doesn't need to loop)

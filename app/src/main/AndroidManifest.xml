@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permission for floating overlay window -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    
+    <!-- Permission for foreground service (Android 9.0+) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
+        android:name=".OptiLearnApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -56,6 +63,12 @@
             android:label="Settings"
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.OptiLearn" />
+        
+        <!-- Floating Console Service -->
+        <service
+            android:name=".services.FloatingConsoleService"
+            android:enabled="true"
+            android:exported="false" />
             
     </application>
 

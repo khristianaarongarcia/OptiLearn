@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +14,12 @@ import android.view.Window
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -32,16 +34,17 @@ class QuizActivity : AppCompatActivity() {
 
     private val viewModel: GameViewModel by viewModels()
     
-    private lateinit var btnMenu: ImageView
+    private lateinit var btnMenu: AppCompatImageButton
     private lateinit var tvHintCount: TextView
-    private lateinit var tvQuestionProgress: TextView
-    private lateinit var progressBar: ProgressBar
+    private lateinit var tvQuestionCounter: TextView
+    private lateinit var tvTimer: TextView
+    private lateinit var tvTimeBonus: TextView
     private lateinit var tvQuestion: TextView
     private lateinit var btnOptionA: MaterialButton
     private lateinit var btnOptionB: MaterialButton
     private lateinit var btnOptionC: MaterialButton
     private lateinit var btnOptionD: MaterialButton
-    private lateinit var btnUseOptiHint: MaterialButton
+    private lateinit var btnUseOptiHint: AppCompatImageButton
     
     // New animation views
     private lateinit var lottieLoading: LottieAnimationView
@@ -50,6 +53,10 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var lottieStreak: LottieAnimationView
     private lateinit var layoutStreak: LinearLayout
     private lateinit var tvStreakCount: TextView
+    
+    // Timer
+    private var quizTimer: CountDownTimer? = null
+    private var timeLeftInMillis: Long = 60000 // 60 seconds
     
     private var levelId: Int = 1
     private var levelTitle: String = ""
@@ -85,14 +92,19 @@ class QuizActivity : AppCompatActivity() {
     private fun initializeViews() {
         btnMenu = findViewById(R.id.btnMenu)
         tvHintCount = findViewById(R.id.tvHintCount)
-        tvQuestionProgress = findViewById(R.id.tvQuestionProgress)
-        progressBar = findViewById(R.id.progressBar)
+        tvQuestionCounter = findViewById(R.id.tvQuestionCounter)
+        tvTimer = findViewById(R.id.tvTimer)
+        tvTimeBonus = findViewById(R.id.tvTimeBonus)
         tvQuestion = findViewById(R.id.tvQuestion)
         btnOptionA = findViewById(R.id.btnOptionA)
         btnOptionB = findViewById(R.id.btnOptionB)
         btnOptionC = findViewById(R.id.btnOptionC)
         btnOptionD = findViewById(R.id.btnOptionD)
         btnUseOptiHint = findViewById(R.id.btnUseOptiHint)
+        
+        // Add animations to buttons
+        setupButtonAnimations(btnMenu)
+        setupButtonAnimations(btnUseOptiHint)
         
         // Initialize animation views
         lottieLoading = findViewById(R.id.lottieLoading)
@@ -122,7 +134,6 @@ class QuizActivity : AppCompatActivity() {
             questionList?.let {
                 if (it.isNotEmpty()) {
                     questions = it
-                    progressBar.max = questions.size
                     displayQuestion()
                 }
             }
@@ -132,7 +143,7 @@ class QuizActivity : AppCompatActivity() {
         viewModel.userProgress.observe(this) { progress ->
             progress?.let {
                 tvHintCount.text = "💡 ${it.optiHints}"
-                btnUseOptiHint.isEnabled = it.canUseOptiHint() && !hasAnswered
+                setHintButtonEnabled(it.canUseOptiHint() && !hasAnswered)
             }
         }
     }
@@ -142,6 +153,22 @@ class QuizActivity : AppCompatActivity() {
         val optionLetters = listOf("A", "B", "C", "D")
         
         optionButtons.forEachIndexed { index, button ->
+            // Add touch animation
+            button.setOnTouchListener { view, event ->
+                when (event.action) {
+                    android.view.MotionEvent.ACTION_DOWN -> {
+                        val pressAnim = AnimationUtils.loadAnimation(this, R.anim.button_press)
+                        view.startAnimation(pressAnim)
+                    }
+                    android.view.MotionEvent.ACTION_UP,
+                    android.view.MotionEvent.ACTION_CANCEL -> {
+                        val releaseAnim = AnimationUtils.loadAnimation(this, R.anim.button_release)
+                        view.startAnimation(releaseAnim)
+                    }
+                }
+                false // Return false to allow click listener to work
+            }
+            
             button.setOnClickListener {
                 if (!hasAnswered) {
                     SoundManager.playButtonClick()
@@ -164,9 +191,8 @@ class QuizActivity : AppCompatActivity() {
         
         val question = questions[currentQuestionIndex]
         
-        // Update progress
-        tvQuestionProgress.text = "Question ${currentQuestionIndex + 1} of ${questions.size}"
-        progressBar.progress = currentQuestionIndex + 1
+        // Update question counter
+        updateQuestionCounter()
         
         // Display question and options
         tvQuestion.text = question.questionText
@@ -177,9 +203,15 @@ class QuizActivity : AppCompatActivity() {
         
         // Reset UI
         resetButtonStates()
-        btnUseOptiHint.isEnabled = true
+        setHintButtonEnabled(true)
         hasAnswered = false
         selectedAnswer = null
+        
+        // Start timer for first question
+        if (currentQuestionIndex == 0) {
+            timeLeftInMillis = 60000 // Reset to 60 seconds
+            startTimer()
+        }
     }
 
     private fun selectAnswer(answer: String, button: MaterialButton) {
@@ -198,9 +230,12 @@ class QuizActivity : AppCompatActivity() {
             correctAnswers++
             correctStreak++
             
-            // Play correct sound and animation
+            // Add bonus time (30-45 seconds randomly)
+            val bonusSeconds = (30..45).random()
+            addBonusTime(bonusSeconds)
+            
+            // Play correct sound
             SoundManager.playCorrectSound()
-            AnimationManager.playFeedback(lottieCorrect, true)
             
             // Play streak animation if 3+ correct in a row
             if (correctStreak >= 3) {
@@ -215,9 +250,8 @@ class QuizActivity : AppCompatActivity() {
             button.setTextColor(Color.WHITE)
             correctStreak = 0  // Reset streak
             
-            // Play wrong sound and animation
+            // Play wrong sound
             SoundManager.playWrongSound()
-            AnimationManager.playFeedback(lottieWrong, false)
             
             // Highlight correct answer
             highlightCorrectAnswer(question.correctAnswer)
@@ -234,6 +268,9 @@ class QuizActivity : AppCompatActivity() {
      * Show feedback dialog with explanation and continue button
      */
     private fun showFeedbackDialog(isCorrect: Boolean, explanation: String) {
+        // Pause timer while showing feedback
+        quizTimer?.cancel()
+        
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_feedback)
@@ -251,11 +288,11 @@ class QuizActivity : AppCompatActivity() {
         // Set feedback content based on correctness
         if (isCorrect) {
             tvFeedbackTitle.text = "✓ Correct!"
-            tvFeedbackTitle.setTextColor(Color.parseColor("#00B894"))
+            tvFeedbackTitle.setTextColor(ContextCompat.getColor(this, R.color.correct_answer))
             lottieFeedback.setAnimation(R.raw.correct_answer)
         } else {
             tvFeedbackTitle.text = "✗ Wrong!"
-            tvFeedbackTitle.setTextColor(Color.parseColor("#D63031"))
+            tvFeedbackTitle.setTextColor(ContextCompat.getColor(this, R.color.wrong_answer))
             lottieFeedback.setAnimation(R.raw.wrong_answer)
         }
         
@@ -266,6 +303,10 @@ class QuizActivity : AppCompatActivity() {
         btnContinue.setOnClickListener {
             SoundManager.playButtonClick()
             dialog.dismiss()
+            
+            // Resume timer after dialog closes
+            startTimer()
+            
             moveToNextQuestion()
         }
         
@@ -311,7 +352,7 @@ class QuizActivity : AppCompatActivity() {
         listOf(btnOptionA, btnOptionB, btnOptionC, btnOptionD).forEach {
             it.isEnabled = false
         }
-        btnUseOptiHint.isEnabled = false
+        setHintButtonEnabled(false)
     }
 
     private fun useOptiHint() {
@@ -410,6 +451,9 @@ class QuizActivity : AppCompatActivity() {
      * Show pause menu dialog
      */
     private fun showPauseMenu() {
+        // Pause timer while menu is open
+        quizTimer?.cancel()
+        
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_pause_menu)
@@ -418,20 +462,29 @@ class QuizActivity : AppCompatActivity() {
         
         // Initialize dialog views
         val btnClosePause = dialog.findViewById<ImageView>(R.id.btnClosePause)
-        val btnResume = dialog.findViewById<MaterialButton>(R.id.btnResume)
-        val btnRestart = dialog.findViewById<MaterialButton>(R.id.btnRestart)
-        val btnExitQuiz = dialog.findViewById<MaterialButton>(R.id.btnExitQuiz)
+    val btnResume = dialog.findViewById<AppCompatImageButton>(R.id.btnResume)
+    val btnRestart = dialog.findViewById<AppCompatImageButton>(R.id.btnRestart)
+    val btnExitQuiz = dialog.findViewById<AppCompatImageButton>(R.id.btnExitQuiz)
+        
+        // Add hover and click effects to buttons
+        setupButtonAnimations(btnResume)
+        setupButtonAnimations(btnRestart)
+        setupButtonAnimations(btnExitQuiz)
         
         // Close button - dismiss dialog
         btnClosePause.setOnClickListener {
             SoundManager.playButtonClick()
             dialog.dismiss()
+            // Resume timer when dialog closes
+            startTimer()
         }
         
         // Resume button - dismiss dialog and continue
         btnResume.setOnClickListener {
             SoundManager.playButtonClick()
             dialog.dismiss()
+            // Resume timer when resuming
+            startTimer()
         }
         
         // Restart button - restart level
@@ -449,6 +502,13 @@ class QuizActivity : AppCompatActivity() {
             finish()
         }
         
+        // Resume timer if dialog is dismissed by tapping outside
+        dialog.setOnDismissListener {
+            if (!isFinishing) {
+                startTimer()
+            }
+        }
+        
         // Show dialog with fade animation
         dialog.show()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -461,6 +521,187 @@ class QuizActivity : AppCompatActivity() {
                 .start()
         }
     }
+
+    /**
+     * Setup button animations for hover and click effects
+     */
+    private fun setupButtonAnimations(button: View) {
+        button.setOnTouchListener { view, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    // Click effect - scale down
+                    view.animate()
+                        .scaleX(0.95f)
+                        .scaleY(0.95f)
+                        .alpha(0.8f)
+                        .setDuration(100)
+                        .start()
+                }
+                android.view.MotionEvent.ACTION_UP, 
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    // Release effect - scale back with overshoot
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .alpha(1.0f)
+                        .setDuration(150)
+                        .setInterpolator(android.view.animation.OvershootInterpolator())
+                        .start()
+                }
+            }
+            false // Return false to allow click listener to work
+        }
+        
+        // Hover effect - enlarge slightly when focused
+        button.setOnHoverListener { view, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_HOVER_ENTER -> {
+                    view.animate()
+                        .scaleX(1.1f)
+                        .scaleY(1.1f)
+                        .setDuration(150)
+                        .setInterpolator(android.view.animation.OvershootInterpolator())
+                        .start()
+                }
+                android.view.MotionEvent.ACTION_HOVER_EXIT -> {
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(100)
+                        .setInterpolator(android.view.animation.DecelerateInterpolator())
+                        .start()
+                }
+            }
+            false
+        }
+    }
+
+    /**
+     * Start countdown timer
+     */
+    private fun startTimer() {
+        quizTimer?.cancel() // Cancel any existing timer
+        
+        quizTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                updateTimerDisplay()
+            }
+
+            override fun onFinish() {
+                // Time's up - auto submit quiz
+                timeLeftInMillis = 0
+                updateTimerDisplay()
+                handleTimeOut()
+            }
+        }.start()
+    }
+
+    /**
+     * Update timer display
+     */
+    private fun updateTimerDisplay() {
+        val seconds = (timeLeftInMillis / 1000).toInt()
+        val minutes = seconds / 60
+        val secs = seconds % 60
+        
+        tvTimer.text = String.format("⏱ %02d:%02d", minutes, secs)
+        
+        // Change color based on time left
+        when {
+            seconds <= 10 -> tvTimer.setTextColor(ContextCompat.getColor(this, R.color.wrong_answer)) // Red
+            seconds <= 20 -> tvTimer.setTextColor(ContextCompat.getColor(this, R.color.warning)) // Yellow
+            else -> tvTimer.setTextColor(ContextCompat.getColor(this, R.color.correct_answer)) // Teal
+        }
+    }
+
+    /**
+     * Add bonus time for correct answer
+     */
+    private fun addBonusTime(seconds: Int) {
+        timeLeftInMillis += seconds * 1000L
+        showTimeBonusPopup(seconds)
+        
+        // Restart timer with new time
+        startTimer()
+    }
+
+    /**
+     * Show time bonus popup animation
+     */
+    private fun showTimeBonusPopup(seconds: Int) {
+        tvTimeBonus.text = "+$seconds"
+        tvTimeBonus.visibility = View.VISIBLE
+        
+        // Animate popup
+        tvTimeBonus.alpha = 0f
+        tvTimeBonus.translationY = 0f
+        tvTimeBonus.animate()
+            .alpha(1f)
+            .translationY(-30f)
+            .setDuration(250)
+            .withEndAction {
+                // Fade out after 800ms
+                tvTimeBonus.animate()
+                    .alpha(0f)
+                    .setStartDelay(800)
+                    .setDuration(250)
+                    .withEndAction {
+                        tvTimeBonus.visibility = View.GONE
+                        tvTimeBonus.translationY = 0f
+                    }
+                    .start()
+            }
+            .start()
+    }
+
+    /**
+     * Handle quiz timeout
+     */
+    private fun handleTimeOut() {
+        if (hasAnswered) return
+        
+        hasAnswered = true
+        disableAllOptions()
+        
+        // Show custom game over dialog
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_game_over)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog.setCancelable(false)
+        
+        val btnContinue = dialog.findViewById<AppCompatImageButton>(R.id.btnContinue)
+        btnContinue.setOnClickListener {
+            dialog.dismiss()
+            finishQuiz()
+        }
+        
+        dialog.show()
+    }
+
+    /**
+     * Update question counter display
+     */
+    private fun updateQuestionCounter() {
+        tvQuestionCounter.text = "${currentQuestionIndex + 1}/${questions.size}"
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SoundManager.startBackgroundMusic(R.raw.music_quiz)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SoundManager.pauseBackgroundMusic()
+        quizTimer?.cancel()
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        quizTimer?.cancel()
+    }
     
     /**
      * Play celebration animation when answer is correct
@@ -470,4 +711,10 @@ class QuizActivity : AppCompatActivity() {
         // Already handled in selectAnswer() using AnimationManager
         // This method is kept for compatibility but can be removed
     }
+
+    private fun setHintButtonEnabled(enabled: Boolean) {
+        btnUseOptiHint.isEnabled = enabled
+        btnUseOptiHint.alpha = if (enabled) 1f else 0.5f
+    }
+
 }

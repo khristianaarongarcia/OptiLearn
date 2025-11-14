@@ -46,6 +46,7 @@
     <string name="btn_retry">Retry Level</string>
     <string name="btn_next_level">Next Level</string>
     <string name="btn_back_to_map">Back to Quest Map</string>
+    <string name="btn_resume_quiz">Resume Quiz</string>
     
     <!-- Trophy Room -->
     <string name="trophy_room_title">Trophy Room</string>

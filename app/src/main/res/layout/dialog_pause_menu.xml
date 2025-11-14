@@ -7,31 +7,30 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <com.google.android.material.card.MaterialCardView
+    <!-- Pixelated Outline Container -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="12dp"
-        app:cardBackgroundColor="@color/white"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/pixelated_modal_outline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_max="500dp">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="20dp"
+            android:layout_margin="14dp">
 
             <!-- Close Button (X) -->
             <ImageView
                 android:id="@+id/btnClosePause"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_gravity="end"
                 android:src="@drawable/ic_close"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -43,72 +42,80 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Game Paused"
-                android:textSize="28sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
-                android:fontFamily="sans-serif-black"
+                android:fontFamily="@font/pixelated_pusab"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="4dp" />
 
             <!-- Subtitle -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Take a moment to rest"
-                android:textSize="14sp"
+                android:textSize="12sp"
+                android:fontFamily="@font/pixelated_display"
                 android:textColor="@color/text_secondary"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="20dp" />
 
             <!-- Resume Button -->
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnResume"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Resume Quiz"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:backgroundTint="@color/primary"
-                app:cornerRadius="16dp"
-                android:layout_marginBottom="12dp"
-                app:icon="@drawable/ic_play"
-                app:iconGravity="textStart"
-                app:iconTint="@color/white" />
+                android:layout_width="@dimen/pause_button_max_width"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:contentDescription="@string/btn_resume_quiz"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:minWidth="@dimen/pause_button_min_width"
+                android:maxWidth="@dimen/pause_button_max_width"
+                android:maxHeight="@dimen/pause_button_max_height"
+                android:minHeight="@dimen/pause_button_min_height"
+                app:srcCompat="@drawable/resumequiz_btn" />
 
             <!-- Restart Button -->
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnRestart"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Restart Level"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/primary"
-                android:backgroundTint="@color/surface_light"
-                app:cornerRadius="16dp"
-                android:layout_marginBottom="12dp"
-                app:icon="@drawable/ic_refresh"
-                app:iconGravity="textStart"
-                app:iconTint="@color/primary" />
+                android:layout_width="@dimen/pause_button_max_width"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:contentDescription="@string/btn_retry"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:minWidth="@dimen/pause_button_min_width"
+                android:maxWidth="@dimen/pause_button_max_width"
+                android:maxHeight="@dimen/pause_button_max_height"
+                android:minHeight="@dimen/pause_button_min_height"
+                app:srcCompat="@drawable/restartlevel_btn" />
 
             <!-- Exit Button -->
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnExitQuiz"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Exit to Map"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/error"
-                android:backgroundTint="#FFEBEE"
-                app:cornerRadius="16dp"
-                app:icon="@drawable/ic_exit"
-                app:iconGravity="textStart"
-                app:iconTint="@color/error" />
+                android:layout_width="@dimen/pause_button_max_width"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:contentDescription="@string/btn_back_to_map"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                android:minWidth="@dimen/pause_button_min_width"
+                android:maxWidth="@dimen/pause_button_max_width"
+                android:maxHeight="@dimen/pause_button_max_height"
+                android:minHeight="@dimen/pause_button_min_height"
+                app:srcCompat="@drawable/exittomap_btn" />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

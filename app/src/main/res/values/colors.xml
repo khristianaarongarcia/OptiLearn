@@ -9,48 +9,48 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     
-    <!-- Game Theme - Vibrant & Fun Colors -->
-    <color name="primary">#6C5CE7</color>              <!-- Modern Purple -->
-    <color name="primary_dark">#5849BE</color>          <!-- Deep Purple -->
-    <color name="primary_light">#A29BFE</color>         <!-- Light Purple -->
-    <color name="accent">#FF6348</color>                <!-- Coral Red Accent -->
-    <color name="accent_light">#FF7979</color>          <!-- Light Coral -->
-    <color name="accent_dark">#EE5A24</color>           <!-- Dark Orange -->
+    <!-- Game Theme - Light Blue, Sky Blue, Teal/Aqua Theme -->
+    <color name="primary">#00BCD4</color>              <!-- Cyan/Turquoise -->
+    <color name="primary_dark">#0097A7</color>          <!-- Dark Cyan -->
+    <color name="primary_light">#B2EBF2</color>         <!-- Light Cyan -->
+    <color name="accent">#00E5FF</color>                <!-- Bright Aqua Accent -->
+    <color name="accent_light">#84FFFF</color>          <!-- Light Aqua -->
+    <color name="accent_dark">#00B8D4</color>           <!-- Dark Aqua -->
     
     <!-- Secondary Colors for Variety -->
-    <color name="secondary_blue">#00A8FF</color>        <!-- Electric Blue -->
-    <color name="secondary_green">#00D2D3</color>       <!-- Turquoise -->
-    <color name="secondary_pink">#FD79A8</color>        <!-- Soft Pink -->
-    <color name="secondary_yellow">#FDCB6E</color>      <!-- Sunny Yellow -->
-    <color name="secondary_cyan">#74B9FF</color>        <!-- Sky Blue -->
-    <color name="secondary_purple">#A29BFE</color>      <!-- Lavender -->
-    <color name="secondary_orange">#FAB1A0</color>      <!-- Peach -->
+    <color name="secondary_blue">#03A9F4</color>        <!-- Light Blue -->
+    <color name="secondary_green">#00BFA5</color>       <!-- Teal/Cyan Green -->
+    <color name="secondary_pink">#80DEEA</color>        <!-- Soft Cyan -->
+    <color name="secondary_yellow">#B2EBF2</color>      <!-- Pale Cyan -->
+    <color name="secondary_cyan">#4DD0E1</color>        <!-- Sky Blue -->
+    <color name="secondary_purple">#00ACC1</color>      <!-- Dark Teal -->
+    <color name="secondary_orange">#26C6DA</color>      <!-- Bright Cyan -->
     
-    <!-- Gradient Colors - Modern Game Style -->
-    <color name="gradient_purple_start">#A29BFE</color>
-    <color name="gradient_purple_end">#6C5CE7</color>
-    <color name="gradient_blue_start">#74B9FF</color>
-    <color name="gradient_blue_end">#0984E3</color>
-    <color name="gradient_orange_start">#FAB1A0</color>
-    <color name="gradient_orange_end">#FF6348</color>
-    <color name="gradient_green_start">#55EFC4</color>
-    <color name="gradient_green_end">#00B894</color>
-    <color name="gradient_pink_start">#FD79A8</color>
-    <color name="gradient_pink_end">#E84393</color>
-    <color name="gradient_yellow_start">#FFEAA7</color>
-    <color name="gradient_yellow_end">#FDCB6E</color>
-    <color name="gradient_red_start">#FF7675</color>
-    <color name="gradient_red_end">#D63031</color>
-    <color name="gradient_teal_start">#81ECEC</color>
-    <color name="gradient_teal_end">#00CEC9</color>
+    <!-- Gradient Colors - Light Blue Theme -->
+    <color name="gradient_purple_start">#B2EBF2</color>
+    <color name="gradient_purple_end">#00BCD4</color>
+    <color name="gradient_blue_start">#E1F5FE</color>
+    <color name="gradient_blue_end">#03A9F4</color>
+    <color name="gradient_orange_start">#80DEEA</color>
+    <color name="gradient_orange_end">#00BCD4</color>
+    <color name="gradient_green_start">#A7FFEB</color>
+    <color name="gradient_green_end">#00BFA5</color>
+    <color name="gradient_pink_start">#E0F7FA</color>
+    <color name="gradient_pink_end">#4DD0E1</color>
+    <color name="gradient_yellow_start">#E1F5FE</color>
+    <color name="gradient_yellow_end">#81D4FA</color>
+    <color name="gradient_red_start">#4DD0E1</color>
+    <color name="gradient_red_end">#0097A7</color>
+    <color name="gradient_teal_start">#B2EBF2</color>
+    <color name="gradient_teal_end">#00ACC1</color>
     
     <!-- Background Colors -->
-    <color name="background">#F5F6FA</color>            <!-- Modern Light Gray -->
-    <color name="background_dark">#2D3436</color>       <!-- Dark Charcoal -->
+    <color name="background">#E0F7FA</color>            <!-- Soft Cyan Background -->
+    <color name="background_dark">#006064</color>       <!-- Dark Teal -->
     <color name="surface">#FFFFFF</color>               <!-- White Surface -->
-    <color name="surface_light">#DFE6E9</color>         <!-- Light Blue Gray -->
+    <color name="surface_light">#B2EBF2</color>         <!-- Light Cyan -->
     <color name="card_background">#FFFFFF</color>
-    <color name="card_elevated">#FAFAFA</color>
+    <color name="card_elevated">#F1F8F9</color>
     
     <!-- Text Colors -->
     <color name="text_primary">#212121</color>          <!-- Dark Gray -->
@@ -60,25 +60,25 @@
     <color name="text_hint">#9E9E9E</color>
     
     <!-- Game State Colors -->
-    <color name="correct_answer">#00B894</color>        <!-- Green Success -->
-    <color name="wrong_answer">#D63031</color>          <!-- Red Error -->
-    <color name="locked_level">#B2BEC3</color>          <!-- Gray -->
-    <color name="unlocked_level">#0984E3</color>        <!-- Blue -->
-    <color name="completed_level">#00B894</color>       <!-- Green -->
-    <color name="current_level">#6C5CE7</color>         <!-- Purple -->
-    <color name="success">#00B894</color>               <!-- Green -->
+    <color name="correct_answer">#00BFA5</color>        <!-- Teal Success -->
+    <color name="wrong_answer">#D63031</color>          <!-- Red Error (keep for contrast) -->
+    <color name="locked_level">#B0BEC5</color>          <!-- Gray -->
+    <color name="unlocked_level">#00BCD4</color>        <!-- Cyan -->
+    <color name="completed_level">#00BFA5</color>       <!-- Teal Green -->
+    <color name="current_level">#00E5FF</color>         <!-- Bright Aqua -->
+    <color name="success">#00BFA5</color>               <!-- Teal -->
     <color name="error">#D63031</color>                 <!-- Red -->
-    <color name="warning">#FDCB6E</color>               <!-- Yellow -->
-    <color name="info">#74B9FF</color>                  <!-- Blue -->
+    <color name="warning">#FFA726</color>               <!-- Orange (for contrast) -->
+    <color name="info">#4FC3F7</color>                  <!-- Light Blue -->
     
     <!-- Special Effect Colors -->
     <color name="gold">#FFD700</color>                  <!-- Gold -->
     <color name="silver">#C0C0C0</color>                <!-- Silver -->
     <color name="bronze">#CD7F32</color>                <!-- Bronze -->
     <color name="yellow_star">#FFC107</color>           <!-- Yellow Star -->
-    <color name="xp_bar">#7C4DFF</color>                <!-- Purple XP -->
-    <color name="streak_fire">#FF6E40</color>           <!-- Orange Fire -->
-    <color name="combo_glow">#FFD740</color>            <!-- Yellow Glow -->
+    <color name="xp_bar">#00BCD4</color>                <!-- Cyan XP -->
+    <color name="streak_fire">#00E5FF</color>           <!-- Aqua Glow -->
+    <color name="combo_glow">#80DEEA</color>            <!-- Soft Cyan Glow -->
     
     <!-- Semi-transparent Overlays -->
     <color name="overlay_dark">#80000000</color>        <!-- 50% Black -->
@@ -90,5 +90,5 @@
     <color name="badge_silver">#C0C0C0</color>
     <color name="badge_gold">#FFD700</color>
     <color name="badge_platinum">#E5E4E2</color>
-    <color name="badge_diamond">#B9F2FF</color>
+    <color name="badge_diamond">#B2EBF2</color>         <!-- Light Cyan Diamond -->
 </resources>

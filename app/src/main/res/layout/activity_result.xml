@@ -4,66 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_purple">
-
-    <!-- Character Celebration Animation (Background) -->
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieCharacterCelebrate"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:visibility="gone"
-        app:lottie_rawRes="@raw/character_celebrate"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp" />
-
-    <!-- Badge Unlock Animation -->
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieBadgeUnlock"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:visibility="gone"
-        app:lottie_rawRes="@raw/badge_unlock"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="10dp" />
-
-    <!-- Coin Collect Animation -->
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieCoinCollect"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:visibility="gone"
-        app:lottie_rawRes="@raw/coin_collect"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="10dp" />
-
-    <!-- Level Up Animation -->
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieLevelUp"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:visibility="gone"
-        app:lottie_rawRes="@raw/level_up"
-        app:lottie_autoPlay="false"
-        app:lottie_loop="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="15dp" />
+    android:background="@drawable/background_mainmenu">
 
     <!-- Result Content -->
     <LinearLayout
@@ -85,17 +26,28 @@
             android:text="@string/level_passed"
             android:textSize="32sp"
             android:textStyle="bold"
+            android:fontFamily="@font/pixelated_pusab"
             android:textColor="@color/completed_level"
             android:gravity="center"
             android:layout_marginBottom="24dp" />
 
         <!-- Badge Icon -->
+        <ImageView
+            android:id="@+id/ivBadgeIcon"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/optics_explorer"
+            android:scaleType="centerInside"
+            android:layout_marginBottom="16dp" />
+        
+        <!-- Fallback Text Icon for levels without PNG icons -->
         <TextView
             android:id="@+id/tvBadgeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🔆"
             android:textSize="80sp"
+            android:visibility="gone"
             android:layout_marginBottom="16dp" />
 
         <!-- Badge Name -->
@@ -106,6 +58,7 @@
             android:text="Badge: Finder"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:fontFamily="@font/pixelated_display"
             android:textColor="@color/accent"
             android:layout_marginBottom="32dp" />
 
@@ -130,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/your_score"
                     android:textSize="16sp"
+                    android:fontFamily="@font/pixelated_display"
                     android:textColor="@color/text_secondary"
                     android:layout_marginBottom="8dp" />
 
@@ -172,36 +126,58 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnNextLevel"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/btn_next_level"
-                android:textSize="16sp"
-                app:cornerRadius="12dp"
-                app:backgroundTint="@color/primary"
-                android:layout_marginBottom="12dp" />
+                android:layout_width="@dimen/result_button_max_width"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/btn_next_level"
+                android:layout_gravity="center"
+                android:minWidth="@dimen/result_button_min_width"
+                android:maxWidth="@dimen/result_button_max_width"
+                android:maxHeight="@dimen/result_button_max_height"
+                android:minHeight="@dimen/result_button_min_height"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/nextlevel_btn" />
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnRetry"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/btn_retry"
-                android:textSize="16sp"
-                app:cornerRadius="12dp"
-                app:backgroundTint="@color/accent"
-                android:layout_marginBottom="12dp" />
+                android:layout_width="@dimen/result_button_max_width"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/btn_retry"
+                android:layout_gravity="center"
+                android:minWidth="@dimen/result_button_min_width"
+                android:maxWidth="@dimen/result_button_max_width"
+                android:maxHeight="@dimen/result_button_max_height"
+                android:minHeight="@dimen/result_button_min_height"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/restartlevel_btn" />
 
-            <com.google.android.material.button.MaterialButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/btnBackToMap"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="@string/btn_back_to_map"
-                android:textSize="16sp"
-                app:cornerRadius="12dp"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
+                android:layout_width="@dimen/result_button_max_width"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/btn_back_to_map"
+                android:layout_gravity="center"
+                android:minWidth="@dimen/result_button_min_width"
+                android:maxWidth="@dimen/result_button_max_width"
+                android:maxHeight="@dimen/result_button_max_height"
+                android:minHeight="@dimen/result_button_min_height"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/exittomap_btn" />
         </LinearLayout>
     </LinearLayout>
 

@@ -70,9 +70,9 @@ progress - Quest Map for level navigation - 100% Offline (SharedPreferences + Ro
 
 ### 🎨 Milestone 6: Enhancements
 
--   [ ] Add sound effects for correct/wrong answers
--   [ ] Add background music with toggle in settings
--   [ ] Add "Retry Level" and "Next Level" buttons in results screen
+-   [x] Add sound effects for correct/wrong answers
+-   [x] Add background music with toggle in settings
+-   [x] Add "Retry Level" and "Next Level" buttons in results screen
 -   [ ] Implement data backup/export feature (optional)
 
 ------------------------------------------------------------------------

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chunky Pixel Button Style -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- Pressed state -->
+    <item android:state_pressed="true">
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/primary_dark" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <item android:inset="2dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/primary" />
+                    <corners android:radius="1dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    
+    <!-- Normal state -->
+    <item>
+        <layer-list>
+            <!-- Shadow -->
+            <item android:top="0dp" android:bottom="4dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#000000" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <!-- Border -->
+            <item android:bottom="4dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/primary_dark" />
+                    <corners android:radius="2dp" />
+                </shape>
+            </item>
+            <!-- Main button -->
+            <item android:bottom="6dp" android:left="2dp" android:right="2dp" android:top="2dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/primary" />
+                    <corners android:radius="1dp" />
+                </shape>
+            </item>
+            <!-- Highlight -->
+            <item android:bottom="8dp" android:left="4dp" android:right="4dp" android:top="4dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/accent" />
+                    <corners android:radius="1dp" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    
+</selector>

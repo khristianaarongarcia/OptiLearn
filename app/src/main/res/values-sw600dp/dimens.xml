@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="menu_button_max_width">300dp</dimen>
+    <dimen name="menu_button_min_width">220dp</dimen>
+    <dimen name="menu_button_max_height">110dp</dimen>
+    <dimen name="menu_button_min_height">72dp</dimen>
+
+    <dimen name="pause_button_max_width">240dp</dimen>
+    <dimen name="pause_button_max_height">96dp</dimen>
+    <dimen name="pause_button_min_height">60dp</dimen>
+    <dimen name="pause_button_min_width">180dp</dimen>
+
+    <dimen name="result_button_max_width">300dp</dimen>
+    <dimen name="result_button_max_height">120dp</dimen>
+    <dimen name="result_button_min_height">72dp</dimen>
+    <dimen name="result_button_min_width">220dp</dimen>
+
+    <dimen name="hint_button_max_height">84dp</dimen>
+    <dimen name="hint_button_min_height">56dp</dimen>
+</resources>

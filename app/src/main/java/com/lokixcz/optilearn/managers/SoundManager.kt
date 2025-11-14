@@ -6,6 +6,7 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.util.Log
+import androidx.annotation.RawRes
 import com.lokixcz.optilearn.R
 
 /**
@@ -17,11 +18,15 @@ object SoundManager {
     private const val PREFS_NAME = "OptiLearnPrefs"
     private const val KEY_SOUND_ENABLED = "sound_enabled"
     private const val KEY_MUSIC_ENABLED = "music_enabled"
+    private const val KEY_SOUND_VOLUME = "sound_volume"
+    private const val KEY_MUSIC_VOLUME = "music_volume"
 
     private var soundPool: SoundPool? = null
     private var mediaPlayer: MediaPlayer? = null
     private var context: Context? = null
     private var prefs: SharedPreferences? = null
+    private var currentMusicResId: Int? = null
+    private var lastMusicResId: Int? = null
 
     // Sound IDs
     private var soundCorrect: Int = 0
@@ -37,6 +42,8 @@ object SoundManager {
     // Settings
     private var soundEnabled: Boolean = true
     private var musicEnabled: Boolean = true
+    private var soundVolume: Float = 1.0f // 0.0 to 1.0
+    private var musicVolume: Float = 0.3f // 0.0 to 1.0
     private var isInitialized: Boolean = false
 
     /**
@@ -51,6 +58,8 @@ object SoundManager {
         // Load preferences
         soundEnabled = prefs?.getBoolean(KEY_SOUND_ENABLED, true) ?: true
         musicEnabled = prefs?.getBoolean(KEY_MUSIC_ENABLED, true) ?: true
+        soundVolume = prefs?.getFloat(KEY_SOUND_VOLUME, 1.0f) ?: 1.0f
+        musicVolume = prefs?.getFloat(KEY_MUSIC_VOLUME, 0.3f) ?: 0.3f
 
         // Initialize SoundPool for sound effects
         val audioAttributes = AudioAttributes.Builder()
@@ -63,8 +72,6 @@ object SoundManager {
             .setAudioAttributes(audioAttributes)
             .build()
 
-        // Load sound effects (using placeholder resource IDs - will create later)
-        // For now, we'll use confetti_animation as placeholder for all sounds
         loadSounds()
 
         isInitialized = true
@@ -72,21 +79,31 @@ object SoundManager {
     }
 
     private fun loadSounds() {
-        // Note: These will use the confetti animation JSON as placeholder until actual sound files are added
-        // In actual implementation, replace with proper .mp3 or .ogg files
-        try {
-            soundCorrect = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundWrong = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundButtonClick = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundLevelComplete = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundBadgeUnlock = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundCoinCollect = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundStreak = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundLevelUnlock = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            soundHintUse = soundPool?.load(context, R.raw.confetti_animation, 1) ?: 0
-            Log.d(TAG, "Sounds loaded (using placeholders)")
+        soundCorrect = loadSound(R.raw.sfx_correct)
+        soundWrong = loadSound(R.raw.sfx_wrong)
+        soundButtonClick = loadSound(R.raw.sfx_button_click)
+        soundLevelComplete = loadSound(R.raw.sfx_level_complete)
+        soundBadgeUnlock = loadSound(R.raw.sfx_badge_unlock)
+        soundCoinCollect = loadSound(R.raw.sfx_coin_collect)
+        soundStreak = loadSound(R.raw.sfx_streak)
+        soundLevelUnlock = loadSound(R.raw.sfx_level_unlock)
+        soundHintUse = loadSound(R.raw.sfx_hint_use).takeIf { it != 0 }
+            ?: loadSound(R.raw.sfx_coin_collect)
+        Log.d(TAG, "Sound effects loaded")
+    }
+
+    private fun loadSound(@RawRes resId: Int): Int {
+        val pool = soundPool ?: return 0
+        val ctx = context ?: return 0
+        return try {
+            val soundId = pool.load(ctx, resId, 1)
+            if (soundId == 0) {
+                Log.w(TAG, "SoundPool returned 0 for resId=$resId")
+            }
+            soundId
         } catch (e: Exception) {
-            Log.e(TAG, "Error loading sounds: ${e.message}")
+            Log.e(TAG, "Error loading sound resId=$resId: ${e.message}")
+            0
         }
     }
 
@@ -97,7 +114,8 @@ object SoundManager {
         if (!soundEnabled || !isInitialized || soundId == 0) return
 
         try {
-            soundPool?.play(soundId, volume, volume, 1, 0, 1.0f)
+            val finalVolume = volume * soundVolume
+            soundPool?.play(soundId, finalVolume, finalVolume, 1, 0, 1.0f)
         } catch (e: Exception) {
             Log.e(TAG, "Error playing sound: ${e.message}")
         }
@@ -121,13 +139,27 @@ object SoundManager {
         if (!musicEnabled || !isInitialized) return
 
         try {
+            // If the requested track is already playing, just ensure it's running
+            if (currentMusicResId == rawResId && mediaPlayer?.isPlaying == true) {
+                return
+            }
+
+            // If the same track is paused, resume it instead of recreating the player
+            if (currentMusicResId == rawResId && mediaPlayer != null) {
+                resumeBackgroundMusic()
+                return
+            }
+
             stopBackgroundMusic()
 
-            mediaPlayer = MediaPlayer.create(context, rawResId)?.apply {
+            val ctx = context ?: return
+            mediaPlayer = MediaPlayer.create(ctx, rawResId)?.apply {
                 isLooping = true
-                setVolume(0.3f, 0.3f) // Lower volume for background music
+                setVolume(musicVolume, musicVolume)
                 start()
-                Log.d(TAG, "Background music started")
+                currentMusicResId = rawResId
+                lastMusicResId = rawResId
+                Log.d(TAG, "Background music started (resId=$rawResId)")
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error starting background music: ${e.message}")
@@ -145,6 +177,7 @@ object SoundManager {
                 }
                 it.release()
                 mediaPlayer = null
+                currentMusicResId = null
                 Log.d(TAG, "Background music stopped")
             }
         } catch (e: Exception) {
@@ -180,6 +213,8 @@ object SoundManager {
                     it.start()
                     Log.d(TAG, "Background music resumed")
                 }
+            } ?: lastMusicResId?.let { lastRes ->
+                startBackgroundMusic(lastRes)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error resuming background music: ${e.message}")
@@ -219,6 +254,46 @@ object SoundManager {
     fun isMusicEnabled(): Boolean = musicEnabled
 
     /**
+     * Set sound effects volume (0-100)
+     */
+    fun setSoundVolume(volumePercent: Int) {
+        soundVolume = (volumePercent.coerceIn(0, 100) / 100f)
+        prefs?.edit()?.putFloat(KEY_SOUND_VOLUME, soundVolume)?.apply()
+        soundEnabled = volumePercent > 0
+        prefs?.edit()?.putBoolean(KEY_SOUND_ENABLED, soundEnabled)?.apply()
+        Log.d(TAG, "Sound volume set to $volumePercent% (${soundVolume}f)")
+    }
+
+    /**
+     * Set background music volume (0-100)
+     */
+    fun setMusicVolume(volumePercent: Int) {
+        musicVolume = (volumePercent.coerceIn(0, 100) / 100f)
+        prefs?.edit()?.putFloat(KEY_MUSIC_VOLUME, musicVolume)?.apply()
+        musicEnabled = volumePercent > 0
+        prefs?.edit()?.putBoolean(KEY_MUSIC_ENABLED, musicEnabled)?.apply()
+        
+        // Update current playing music volume
+        try {
+            mediaPlayer?.setVolume(musicVolume, musicVolume)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting music volume: ${e.message}")
+        }
+        
+        Log.d(TAG, "Music volume set to $volumePercent% (${musicVolume}f)")
+    }
+
+    /**
+     * Get current sound volume (0-100)
+     */
+    fun getSoundVolume(): Int = (soundVolume * 100).toInt()
+
+    /**
+     * Get current music volume (0-100)
+     */
+    fun getMusicVolume(): Int = (musicVolume * 100).toInt()
+
+    /**
      * Release all resources
      */
     fun release() {
@@ -226,6 +301,8 @@ object SoundManager {
             stopBackgroundMusic()
             soundPool?.release()
             soundPool = null
+            currentMusicResId = null
+            lastMusicResId = null
             isInitialized = false
             Log.d(TAG, "SoundManager released")
         } catch (e: Exception) {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.lokixcz.optilearn.R
@@ -19,6 +20,7 @@ class BadgeAdapter(
 
     inner class BadgeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardBadge: MaterialCardView = itemView.findViewById(R.id.cardBadge)
+        val ivBadgeIcon: ImageView = itemView.findViewById(R.id.ivBadgeIcon)
         val tvBadgeIcon: TextView = itemView.findViewById(R.id.tvBadgeIcon)
         val ivLockIcon: ImageView = itemView.findViewById(R.id.ivLockIcon)
         val tvBadgeName: TextView = itemView.findViewById(R.id.tvBadgeName)
@@ -37,9 +39,31 @@ class BadgeAdapter(
 
     override fun onBindViewHolder(holder: BadgeViewHolder, position: Int) {
         val badge = badges[position]
+        val context = holder.itemView.context
         
-        // Set badge icon from constants
-        holder.tvBadgeIcon.text = Constants.BADGE_ICONS[badge.levelId] ?: "🏆"
+        // Set badge icon - try to load PNG, fall back to emoji if icon is an emoji
+        val iconName = Constants.BADGE_ICONS[badge.levelId] ?: "🏆"
+        if (iconName.length <= 2) {
+            // It's an emoji (fallback for missing icons)
+            holder.ivBadgeIcon.visibility = View.GONE
+            holder.tvBadgeIcon.visibility = View.VISIBLE
+            holder.tvBadgeIcon.text = iconName
+        } else {
+            // It's a drawable resource name
+            holder.tvBadgeIcon.visibility = View.GONE
+            holder.ivBadgeIcon.visibility = View.VISIBLE
+            val drawableId = context.resources.getIdentifier(
+                iconName,
+                "drawable",
+                context.packageName
+            )
+            if (drawableId != 0) {
+                holder.ivBadgeIcon.setImageResource(drawableId)
+            } else {
+                // Fallback if drawable not found
+                holder.ivBadgeIcon.setImageResource(R.drawable.optics_explorer)
+            }
+        }
         
         // Set level name and number
         holder.tvBadgeName.text = badge.title
@@ -48,12 +72,14 @@ class BadgeAdapter(
         // Handle badge state (completed, unlocked, or locked)
         when {
             badge.isCompleted -> {
-                // Badge earned - full color, show stats
+                // Badge earned - full color, show stats, show icon
                 holder.cardBadge.alpha = 1.0f
                 holder.ivLockIcon.visibility = View.GONE
+                holder.ivBadgeIcon.visibility = if (iconName.length > 2) View.VISIBLE else View.GONE
+                holder.tvBadgeIcon.visibility = if (iconName.length <= 2) View.VISIBLE else View.GONE
                 holder.tvStatus.visibility = View.VISIBLE
                 holder.tvStatus.text = "COMPLETED"
-                holder.tvStatus.setBackgroundColor(Color.parseColor("#4CAF50")) // Green
+                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.correct_answer)) // Teal
                 
                 // Show high score
                 holder.layoutHighScore.visibility = View.VISIBLE
@@ -67,22 +93,26 @@ class BadgeAdapter(
                 }
             }
             badge.isUnlocked && !badge.isCompleted -> {
-                // Badge available but not earned yet
+                // Badge available but not earned yet - show icon
                 holder.cardBadge.alpha = 0.8f
                 holder.ivLockIcon.visibility = View.GONE
+                holder.ivBadgeIcon.visibility = if (iconName.length > 2) View.VISIBLE else View.GONE
+                holder.tvBadgeIcon.visibility = if (iconName.length <= 2) View.VISIBLE else View.GONE
                 holder.tvStatus.visibility = View.VISIBLE
                 holder.tvStatus.text = "UNLOCKED"
-                holder.tvStatus.setBackgroundColor(Color.parseColor("#2196F3")) // Blue
+                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.unlocked_level)) // Cyan
                 holder.layoutHighScore.visibility = View.GONE
                 holder.tvPerfectBadge.visibility = View.GONE
             }
             else -> {
-                // Badge locked - grayed out
+                // Badge locked - hide icon, show only lock
                 holder.cardBadge.alpha = 0.5f
                 holder.ivLockIcon.visibility = View.VISIBLE
+                holder.ivBadgeIcon.visibility = View.GONE
+                holder.tvBadgeIcon.visibility = View.GONE
                 holder.tvStatus.visibility = View.VISIBLE
                 holder.tvStatus.text = "LOCKED"
-                holder.tvStatus.setBackgroundColor(Color.parseColor("#9E9E9E")) // Gray
+                holder.tvStatus.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.locked_level)) // Gray
                 holder.layoutHighScore.visibility = View.GONE
                 holder.tvPerfectBadge.visibility = View.GONE
             }

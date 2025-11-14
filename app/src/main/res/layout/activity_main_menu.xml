@@ -3,27 +3,32 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_purple"
+    android:background="@drawable/background_mainmenu"
     tools:context=".view.MainActivity">
 
-    <!-- Animated Title with Shadow -->
-    <TextView
-        android:id="@+id/tvAppTitle"
-        android:layout_width="wrap_content"
+    <!-- Floating Particles Effect -->
+    <com.lokixcz.optilearn.view.FloatingParticlesView
+        android:id="@+id/floatingParticles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Logo -->
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+    android:contentDescription="@string/main_menu_title"
         android:layout_marginTop="60dp"
-        android:text="@string/main_menu_title"
-        android:textColor="@color/white"
-        android:textSize="56sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-black"
-        android:shadowColor="#80000000"
-        android:shadowDx="4"
-        android:shadowDy="4"
-        android:shadowRadius="8"
-        android:letterSpacing="0.05"
+        android:src="@drawable/optilearn_logo"
+        android:importantForAccessibility="yes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,192 +41,80 @@
         android:text="Master the World of Light!"
         android:textColor="#CCFFFFFF"
         android:textSize="16sp"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="@font/pixelated_display"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvAppTitle" />
-
-    <!-- Modern Stats Card with Gradient -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardUserProgress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="20dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="12dp"
-        app:strokeWidth="0dp"
-        android:backgroundTint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="24dp">
-
-            <!-- Completed Levels -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
-                android:background="@drawable/bg_gradient_purple_game">
-
-                <TextView
-                    android:id="@+id/tvCompletedLevels"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/white"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Levels"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:fontFamily="sans-serif-medium"
-                    android:alpha="0.9" />
-            </LinearLayout>
-
-            <!-- OptiHints -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:padding="8dp"
-                android:background="@drawable/bg_gradient_orange_game">
-
-                <TextView
-                    android:id="@+id/tvOptiHints"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/white"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hints"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:fontFamily="sans-serif-medium"
-                    android:alpha="0.9" />
-            </LinearLayout>
-
-            <!-- Total Score -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_marginStart="12dp"
-                android:padding="8dp"
-                android:background="@drawable/bg_gradient_green_game">
-
-                <TextView
-                    android:id="@+id/tvTotalScore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
-                    android:textColor="@color/white"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-black" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Score"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    android:fontFamily="sans-serif-medium"
-                    android:alpha="0.9" />
-            </LinearLayout>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintTop_toBottomOf="@id/imgLogo" />
 
     <!-- Game Action Buttons -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:orientation="vertical"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardUserProgress"
-        app:layout_constraintVertical_bias="0.3">
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+        app:layout_constraintVertical_bias="0.2">
 
-        <!-- Play Button - Hero Button -->
-        <com.google.android.material.button.MaterialButton
+        <!-- Play Button -->
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnPlay"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/menu_button_max_width"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="START PLAYING"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-black"
-            android:letterSpacing="0.05"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_game_primary"
-            android:elevation="8dp"
-            android:stateListAnimator="@null"
-            app:cornerRadius="35dp" />
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_play"
+            android:layout_gravity="center"
+            android:maxWidth="@dimen/menu_button_max_width"
+            android:maxHeight="@dimen/menu_button_max_height"
+            android:minWidth="@dimen/menu_button_min_width"
+            android:minHeight="@dimen/menu_button_min_height"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/play_btn" />
 
         <!-- Trophy Room Button -->
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnTrophyRoom"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_width="@dimen/menu_button_max_width"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:text="TROPHY ROOM"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-bold"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_game_accent"
-            android:elevation="6dp"
-            android:stateListAnimator="@null"
-            app:cornerRadius="32dp" />
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_trophy_room"
+            android:layout_gravity="center"
+            android:maxWidth="@dimen/menu_button_max_width"
+            android:maxHeight="@dimen/menu_button_max_height"
+            android:minWidth="@dimen/menu_button_min_width"
+            android:minHeight="@dimen/menu_button_min_height"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/trophyroom_btn" />
 
         <!-- Settings Button -->
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnSettings"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="SETTINGS"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@color/white"
-            app:backgroundTint="#80FFFFFF"
-            app:cornerRadius="30dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="@color/white"
-            style="@style/Widget.Material3.Button.OutlinedButton" />
+            android:layout_width="@dimen/menu_button_max_width"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/btn_settings"
+            android:layout_gravity="center"
+            android:maxWidth="@dimen/menu_button_max_width"
+            android:maxHeight="@dimen/menu_button_max_height"
+            android:minWidth="@dimen/menu_button_min_width"
+            android:minHeight="@dimen/menu_button_min_height"
+            android:padding="0dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/settings_btn" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

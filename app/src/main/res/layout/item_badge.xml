@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="4dp"
     app:cardElevation="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,20 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Badge Icon/Emoji -->
+        <!-- Badge Icon -->
+        <ImageView
+            android:id="@+id/ivBadgeIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/circle_background"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/optics_explorer" />
+        
+        <!-- Fallback Text Icon for levels without PNG icons -->
         <TextView
             android:id="@+id/tvBadgeIcon"
             android:layout_width="64dp"
@@ -22,6 +35,7 @@
             android:background="@drawable/circle_background"
             android:gravity="center"
             android:textSize="32sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,10 +49,10 @@
             android:src="@android:drawable/ic_lock_lock"
             app:tint="@color/text_secondary"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/tvBadgeIcon"
-            app:layout_constraintEnd_toEndOf="@id/tvBadgeIcon"
-            app:layout_constraintStart_toStartOf="@id/tvBadgeIcon"
-            app:layout_constraintTop_toTopOf="@id/tvBadgeIcon"
+            app:layout_constraintBottom_toBottomOf="@id/ivBadgeIcon"
+            app:layout_constraintEnd_toEndOf="@id/ivBadgeIcon"
+            app:layout_constraintStart_toStartOf="@id/ivBadgeIcon"
+            app:layout_constraintTop_toTopOf="@id/ivBadgeIcon"
             tools:visibility="visible" />
 
         <!-- Level Name -->
@@ -52,10 +66,10 @@
             android:ellipsize="end"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pixelated_display"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvBadgeIcon"
+            app:layout_constraintTop_toBottomOf="@id/ivBadgeIcon"
             tools:text="The Light Voyager" />
 
         <!-- Level Number -->
@@ -66,6 +80,7 @@
             android:layout_marginTop="4dp"
             android:textColor="@color/text_secondary"
             android:textSize="12sp"
+            android:fontFamily="@font/pixelated_display"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvBadgeName"
@@ -84,7 +99,7 @@
             android:paddingBottom="4dp"
             android:textColor="@color/white"
             android:textSize="10sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pixelated_display"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvLevelNumber"
@@ -109,7 +124,8 @@
                 android:layout_height="wrap_content"
                 android:text="High Score: "
                 android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:fontFamily="@font/pixelated_display" />
 
             <TextView
                 android:id="@+id/tvHighScore"
@@ -117,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/accent"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/pixelated_display"
                 tools:text="100%" />
 
         </LinearLayout>
@@ -131,7 +147,7 @@
             android:text="⭐ Perfect Score"
             android:textColor="@color/primary"
             android:textSize="11sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/pixelated_display"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

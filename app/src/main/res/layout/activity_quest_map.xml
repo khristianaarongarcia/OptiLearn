@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient_blue_game"
+    android:background="@drawable/background_mainmenu"
     tools:context=".QuestMapActivity">
 
     <!-- Toolbar with Modern Design -->
@@ -19,7 +19,25 @@
         app:titleTextColor="@color/white"
         app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="@color/white" />
+        app:navigationIconTint="@color/white">
+        
+        <!-- Back to Main Menu Button -->
+        <TextView
+            android:id="@+id/btnBackToMainMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:text="← Main Menu"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:fontFamily="@font/pixelated_display"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true" />
+            
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,70 +46,211 @@
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Progress Summary Card - Compact -->
+        <!-- Progress Summary Card - Game Stats Dashboard -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="16dp"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="4dp"
             app:cardElevation="8dp"
             app:cardBackgroundColor="@color/white">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:orientation="vertical"
+                android:padding="12dp">
 
-                <!-- Progress Info -->
+                <!-- Header: Journey Progress -->
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginBottom="5dp">
 
                     <TextView
-                        android:id="@+id/tvProgressLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Your Journey"
+                        android:text="🗺️ Your Journey"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
-                        android:fontFamily="sans-serif-medium" />
-
-                    <TextView
-                        android:id="@+id/tvProgressPercentage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0%"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
                         android:textColor="@color/primary"
-                        android:fontFamily="sans-serif-black" />
+                        android:fontFamily="@font/pixelated_pusab"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Progress Container with floating percentage -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        
+                        <!-- Horizontal Progress Bar -->
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="12dp"
+                            android:layout_gravity="bottom"
+                            android:indeterminate="false"
+                            android:max="100"
+                            android:progress="0"
+                            android:progressDrawable="@drawable/horizontal_progress_bar" />
+                        
+                        <!-- Percentage text with arrow that follows progress -->
+                        <LinearLayout
+                            android:id="@+id/layoutProgressIndicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:layout_gravity="bottom"
+                            android:layout_marginBottom="16dp">
+                            
+                            <TextView
+                                android:id="@+id/tvProgressPercentage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/primary"
+                                android:fontFamily="@font/pixelated_pusab"
+                                android:paddingStart="4dp"
+                                android:paddingEnd="4dp"
+                                android:background="@color/white"
+                                android:elevation="2dp" />
+                            
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="▼"
+                                android:textSize="12sp"
+                                android:textColor="@color/primary"
+                                android:layout_marginTop="-2dp"
+                                android:background="@color/white"
+                                android:paddingStart="2dp"
+                                android:paddingEnd="2dp"
+                                android:elevation="2dp" />
+                        </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
 
-                <!-- Circular Progress -->
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:progress="0"
-                    android:progressDrawable="@drawable/circular_progress"
-                    android:background="@drawable/circle_shape" />
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/surface_light"
+                    android:layout_marginBottom="8dp" />
+
+                <!-- Game Stats Grid -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <!-- Levels Completed -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/stat_box_background"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/tvLevelsCompleted"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0/15"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/success"
+                            android:fontFamily="@font/pixelated_pusab" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Levels"
+                            android:textSize="11sp"
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="@font/pixelated_display" />
+                    </LinearLayout>
+
+                    <!-- OptiHints -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/stat_box_background"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/tvOptiHintsCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💡 5"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/secondary_orange"
+                            android:fontFamily="@font/pixelated_pusab" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OptiHints"
+                            android:textSize="11sp"
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="@font/pixelated_display" />
+                    </LinearLayout>
+
+                    <!-- Badges Earned -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@drawable/stat_box_background"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/tvBadgesEarned"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🏆 0"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent"
+                            android:fontFamily="@font/pixelated_pusab" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Badges"
+                            android:textSize="11sp"
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="@font/pixelated_display" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <!-- Levels RecyclerView Container with Continuous Path Background -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:clipChildren="false"
+            android:clipToPadding="false">
             
             <!-- Continuous Light Ray Path Background -->
             <View
@@ -106,6 +265,7 @@
                 android:id="@+id/recyclerViewLevels"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipChildren="false"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
                 android:paddingTop="8dp"

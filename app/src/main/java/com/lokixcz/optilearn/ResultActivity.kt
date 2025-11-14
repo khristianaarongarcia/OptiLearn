@@ -7,11 +7,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.cardview.widget.CardView
-import com.airbnb.lottie.LottieAnimationView
-import com.google.android.material.button.MaterialButton
+import androidx.core.content.ContextCompat
 import com.lokixcz.optilearn.R
 import com.lokixcz.optilearn.managers.AnimationManager
 import com.lokixcz.optilearn.managers.SoundManager
@@ -20,21 +21,16 @@ import com.lokixcz.optilearn.utils.Constants
 class ResultActivity : AppCompatActivity() {
 
     private lateinit var tvResultTitle: TextView
+    private lateinit var ivBadgeIcon: ImageView
     private lateinit var tvBadgeIcon: TextView
     private lateinit var tvBadgeName: TextView
     private lateinit var tvScore: TextView
     private lateinit var tvCorrectAnswers: TextView
     private lateinit var tvPerfectMessage: TextView
-    private lateinit var btnNextLevel: MaterialButton
-    private lateinit var btnRetry: MaterialButton
-    private lateinit var btnBackToMap: MaterialButton
+    private lateinit var btnNextLevel: AppCompatImageButton
+    private lateinit var btnRetry: AppCompatImageButton
+    private lateinit var btnBackToMap: AppCompatImageButton
     private lateinit var cardScore: CardView
-    
-    // Lottie animations
-    private lateinit var lottieCharacterCelebrate: LottieAnimationView
-    private lateinit var lottieBadgeUnlock: LottieAnimationView
-    private lateinit var lottieCoinCollect: LottieAnimationView
-    private lateinit var lottieLevelUp: LottieAnimationView
     
     private var levelId: Int = 1
     private var levelTitle: String = ""
@@ -66,24 +62,25 @@ class ResultActivity : AppCompatActivity() {
 
     private fun initializeViews() {
         tvResultTitle = findViewById(R.id.tvResultTitle)
+        ivBadgeIcon = findViewById(R.id.ivBadgeIcon)
         tvBadgeIcon = findViewById(R.id.tvBadgeIcon)
         tvBadgeName = findViewById(R.id.tvBadgeName)
         tvScore = findViewById(R.id.tvScore)
         tvCorrectAnswers = findViewById(R.id.tvCorrectAnswers)
         tvPerfectMessage = findViewById(R.id.tvPerfectMessage)
         btnNextLevel = findViewById(R.id.btnNextLevel)
-        btnRetry = findViewById(R.id.btnRetry)
-        btnBackToMap = findViewById(R.id.btnBackToMap)
+    btnRetry = findViewById(R.id.btnRetry)
+    btnBackToMap = findViewById(R.id.btnBackToMap)
         cardScore = findViewById(R.id.cardScore)
         
-        // Initialize Lottie animations
-        lottieCharacterCelebrate = findViewById(R.id.lottieCharacterCelebrate)
-        lottieBadgeUnlock = findViewById(R.id.lottieBadgeUnlock)
-        lottieCoinCollect = findViewById(R.id.lottieCoinCollect)
-        lottieLevelUp = findViewById(R.id.lottieLevelUp)
+        // Add button animations
+        setupButtonAnimations(btnNextLevel)
+        setupButtonAnimations(btnRetry)
+        setupButtonAnimations(btnBackToMap)
         
         // Initially hide elements for animation
         tvResultTitle.alpha = 0f
+        ivBadgeIcon.alpha = 0f
         tvBadgeIcon.alpha = 0f
         tvBadgeName.alpha = 0f
         cardScore.alpha = 0f
@@ -93,9 +90,30 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun displayResults() {
-        // Set badge
-        tvBadgeIcon.text = badgeIcon
-        tvBadgeName.text = "Badge: $badgeName"
+        // Set badge icon - try to load PNG, fall back to emoji if icon is an emoji
+        if (badgeIcon.length <= 2) {
+            // It's an emoji (fallback for missing icons)
+            ivBadgeIcon.visibility = View.GONE
+            tvBadgeIcon.visibility = View.VISIBLE
+            tvBadgeIcon.text = badgeIcon
+        } else {
+            // It's a drawable resource name
+            tvBadgeIcon.visibility = View.GONE
+            ivBadgeIcon.visibility = View.VISIBLE
+            val drawableId = resources.getIdentifier(
+                badgeIcon,
+                "drawable",
+                packageName
+            )
+            if (drawableId != 0) {
+                ivBadgeIcon.setImageResource(drawableId)
+            } else {
+                // Fallback if drawable not found
+                ivBadgeIcon.setImageResource(R.drawable.optics_explorer)
+            }
+        }
+        
+        tvBadgeName.text = levelTitle  // Display level title instead of badge name
         
         // Set score
         tvScore.text = "$score%"
@@ -105,10 +123,10 @@ class ResultActivity : AppCompatActivity() {
         val hasPassed = score >= Constants.PASS_THRESHOLD
         if (hasPassed) {
             tvResultTitle.text = getString(R.string.level_passed)
-            tvResultTitle.setTextColor(Color.parseColor("#4CAF50"))
+            tvResultTitle.setTextColor(ContextCompat.getColor(this, R.color.correct_answer))
         } else {
             tvResultTitle.text = getString(R.string.level_failed)
-            tvResultTitle.setTextColor(Color.parseColor("#F44336"))
+            tvResultTitle.setTextColor(ContextCompat.getColor(this, R.color.wrong_answer))
             btnNextLevel.visibility = View.GONE
         }
         
@@ -129,9 +147,6 @@ class ResultActivity : AppCompatActivity() {
                 SoundManager.playBadgeUnlock()
             }
             SoundManager.playCoinCollect()
-            
-            // Play Lottie animations
-            playResultAnimations(isPerfect)
         }
         
         // Play entrance animations
@@ -156,8 +171,13 @@ class ResultActivity : AppCompatActivity() {
         // 2. Badge pops up with bounce (300ms delay)
         handler.postDelayed({
             val badgeAnim = AnimationUtils.loadAnimation(this, R.anim.badge_popup)
-            tvBadgeIcon.startAnimation(badgeAnim)
-            tvBadgeIcon.alpha = 1f
+            if (ivBadgeIcon.visibility == View.VISIBLE) {
+                ivBadgeIcon.startAnimation(badgeAnim)
+                ivBadgeIcon.alpha = 1f
+            } else {
+                tvBadgeIcon.startAnimation(badgeAnim)
+                tvBadgeIcon.alpha = 1f
+            }
         }, 300)
         
         // 3. Badge name fades in (600ms delay)
@@ -190,37 +210,6 @@ class ResultActivity : AppCompatActivity() {
                 btnBackToMap.alpha = 1f
             }, 200)
         }, 1200)
-    }
-    
-    /**
-     * Play result animations based on performance
-     */
-    private fun playResultAnimations(isPerfect: Boolean) {
-        val handler = Handler(Looper.getMainLooper())
-        
-        // 1. Show character celebration (0ms)
-        handler.postDelayed({
-            AnimationManager.playOnce(lottieCharacterCelebrate, hideOnComplete = true)
-        }, 0)
-        
-        // 2. Show coin collect animation (500ms)
-        handler.postDelayed({
-            AnimationManager.playOnce(lottieCoinCollect, hideOnComplete = true)
-        }, 500)
-        
-        // 3. If perfect or unlocking new level, show badge unlock (1000ms)
-        if (isPerfect) {
-            handler.postDelayed({
-                AnimationManager.playOnce(lottieBadgeUnlock, hideOnComplete = true)
-            }, 1000)
-        }
-        
-        // 4. If next level unlocked, show level up animation (1500ms)
-        if (levelId < 15) {
-            handler.postDelayed({
-                AnimationManager.playOnce(lottieLevelUp, hideOnComplete = true)
-            }, 1500)
-        }
     }
     
     private fun setupClickListeners() {
@@ -261,6 +250,70 @@ class ResultActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    /**
+     * Setup button animations for hover and click effects
+     */
+    private fun setupButtonAnimations(button: android.view.View) {
+        button.setOnTouchListener { view, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    // Click effect - scale down
+                    view.animate()
+                        .scaleX(0.95f)
+                        .scaleY(0.95f)
+                        .alpha(0.8f)
+                        .setDuration(100)
+                        .start()
+                }
+                android.view.MotionEvent.ACTION_UP, 
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    // Release effect - scale back with overshoot
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .alpha(1.0f)
+                        .setDuration(150)
+                        .setInterpolator(android.view.animation.OvershootInterpolator())
+                        .start()
+                }
+            }
+            false // Return false to allow click listener to work
+        }
+        
+        // Hover effect - enlarge slightly when focused
+        button.setOnHoverListener { view, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_HOVER_ENTER -> {
+                    view.animate()
+                        .scaleX(1.1f)
+                        .scaleY(1.1f)
+                        .setDuration(150)
+                        .setInterpolator(android.view.animation.OvershootInterpolator())
+                        .start()
+                }
+                android.view.MotionEvent.ACTION_HOVER_EXIT -> {
+                    view.animate()
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(100)
+                        .setInterpolator(android.view.animation.DecelerateInterpolator())
+                        .start()
+                }
+            }
+            false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SoundManager.startBackgroundMusic(R.raw.music_menu)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SoundManager.pauseBackgroundMusic()
     }
 
     @Deprecated("Deprecated in Java")

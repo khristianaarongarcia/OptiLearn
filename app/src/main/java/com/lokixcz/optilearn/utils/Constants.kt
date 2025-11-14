@@ -75,20 +75,20 @@ object Constants {
     )
     
     val BADGE_ICONS = mapOf(
-        1 to "🔆",
-        2 to "🪞",
-        3 to "📏",
-        4 to "🪞",
-        5 to "✨",
-        6 to "🔄",
-        7 to "🏹",
-        8 to "👁️",
-        9 to "🪞",
-        10 to "🎯",
-        11 to "🔎",
-        12 to "🪞",
-        13 to "🔬",
-        14 to "🚗",
-        15 to "🌟"
+        1 to "optics_explorer",
+        2 to "reflection_rookie",
+        3 to "ray_tracker",
+        4 to "mirror_mapper",
+        5 to "✨",  // Placeholder until icon is created
+        6 to "lateral_inverter",
+        7 to "curved_mirror_champion",
+        8 to "image_identifier",
+        9 to "plane_mirror",
+        10 to "🎯",  // Placeholder until icon is created
+        11 to "real_or_virtual",
+        12 to "mirror_match",
+        13 to "lens_learner",
+        14 to "🚗",  // Placeholder until icon is created
+        15 to "final_quest"
     )
 }

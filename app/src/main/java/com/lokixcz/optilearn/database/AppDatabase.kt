@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
         LevelEntity::class,
         QuestionEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -60,6 +60,15 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
         
+        override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
+            super.onDestructiveMigration(db)
+            INSTANCE?.let { database ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    populateDatabase(database)
+                }
+            }
+        }
+        
         suspend fun populateDatabase(database: AppDatabase) {
             val userProgressDao = database.userProgressDao()
             val levelDao = database.levelDao()
@@ -79,21 +88,21 @@ abstract class AppDatabase : RoomDatabase() {
             
             // Initialize all 15 levels
             val levels = listOf(
-                LevelEntity(1, "Optics Explorer", "Finder", "🔆", isUnlocked = true),
-                LevelEntity(2, "Reflection Rookie", "Mirror Novice", "🪞"),
-                LevelEntity(3, "Ray Tracker", "Ray Ranger", "📏"),
-                LevelEntity(4, "Mirror Mapper", "Mirror Mapper", "🪞"),
+                LevelEntity(1, "Optics Explorer", "Finder", "optics_explorer", isUnlocked = true),
+                LevelEntity(2, "Reflection Rookie", "Mirror Novice", "reflection_rookie"),
+                LevelEntity(3, "Ray Tracker", "Ray Ranger", "ray_tracker"),
+                LevelEntity(4, "Mirror Mapper", "Mirror Mapper", "mirror_mapper"),
                 LevelEntity(5, "Reflection Specialist", "Reflection Expert", "✨"),
-                LevelEntity(6, "Lateral Inverter", "Lateral Wizard", "🔄"),
-                LevelEntity(7, "Curved Mirror Champion", "Curvature Conqueror", "🏹"),
-                LevelEntity(8, "Image Identifier", "Image Inspector", "👁️"),
-                LevelEntity(9, "Plane Mirror Pro", "Plane Pro", "🪞"),
+                LevelEntity(6, "Lateral Inverter", "Lateral Wizard", "lateral_inverter"),
+                LevelEntity(7, "Curved Mirror Champion", "Curvature Conqueror", "curved_mirror_champion"),
+                LevelEntity(8, "Image Identifier", "Image Inspector", "image_identifier"),
+                LevelEntity(9, "Plane Mirror Pro", "Plane Pro", "plane_mirror"),
                 LevelEntity(10, "Focal Finder", "Focal Master", "🎯"),
-                LevelEntity(11, "Real or Virtual?", "Vision Virtuoso", "🔎"),
-                LevelEntity(12, "Mirror Match", "Mirror Matcher", "🪞"),
-                LevelEntity(13, "Lens Learner", "Lens Luminary", "🔬"),
+                LevelEntity(11, "Real or Virtual?", "Vision Virtuoso", "real_or_virtual"),
+                LevelEntity(12, "Mirror Match", "Mirror Matcher", "mirror_match"),
+                LevelEntity(13, "Lens Learner", "Lens Luminary", "lens_learner"),
                 LevelEntity(14, "Mirror Life", "Reflector Pro", "🚗"),
-                LevelEntity(15, "Final Quest", "Optics Legend", "🌟")
+                LevelEntity(15, "Final Quest", "Optics Legend", "final_quest")
             )
             levelDao.insertAllLevels(levels)
             

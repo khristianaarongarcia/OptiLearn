@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.lokixcz.optilearn.managers.SoundManager
 import com.lokixcz.optilearn.model.Level
 import com.lokixcz.optilearn.view.adapter.BadgeAdapter
 import com.lokixcz.optilearn.viewmodel.GameViewModel
@@ -131,6 +132,10 @@ class TrophyRoomActivity : AppCompatActivity() {
         // Observe all levels (badge data)
         viewModel.levels.observe(this) { levels ->
             allBadges = levels
+            android.util.Log.d("TrophyRoom", "Loaded ${levels.size} badges")
+            levels.forEach { level ->
+                android.util.Log.d("TrophyRoom", "Level ${level.levelId}: ${level.title}, Completed: ${level.isCompleted}, Unlocked: ${level.isUnlocked}")
+            }
             filterBadges()
             updateStatistics(levels)
         }
@@ -142,7 +147,8 @@ class TrophyRoomActivity : AppCompatActivity() {
             }
         }
         
-        // Load user progress
+        // Load data
+        viewModel.loadAllLevels() // This loads the badge data!
         viewModel.loadUserProgress()
     }
 
@@ -152,6 +158,7 @@ class TrophyRoomActivity : AppCompatActivity() {
             BadgeFilter.EARNED -> allBadges.filter { it.isCompleted }
             BadgeFilter.LOCKED -> allBadges.filter { !it.isCompleted }
         }
+        android.util.Log.d("TrophyRoom", "Filtered badges (${currentFilter}): ${filteredBadges.size} items")
         badgeAdapter.updateBadges(filteredBadges)
     }
 
@@ -173,5 +180,15 @@ class TrophyRoomActivity : AppCompatActivity() {
         tvPerfectScores.text = perfectScores.toString()
         progressBar.progress = earnedBadges
         progressBar.max = totalBadges
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SoundManager.startBackgroundMusic(R.raw.music_menu)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        SoundManager.pauseBackgroundMusic()
     }
 }
