@@ -1,5 +1,6 @@
 package com.lokixcz.optilearn.utils
 
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +41,15 @@ object DebugLogger {
      */
     fun log(level: ConsoleLog.LogLevel, message: String) {
         val log = ConsoleLog(level, message)
+        
+        // Also output to Android logcat for debugging
+        when (level) {
+            ConsoleLog.LogLevel.DEBUG -> Log.d("OptiLearn", message)
+            ConsoleLog.LogLevel.INFO -> Log.i("OptiLearn", message)
+            ConsoleLog.LogLevel.WARNING -> Log.w("OptiLearn", message)
+            ConsoleLog.LogLevel.ERROR -> Log.e("OptiLearn", message)
+            ConsoleLog.LogLevel.COMMAND -> Log.d("OptiLearn", "CMD: $message")
+        }
         
         synchronized(logs) {
             logs.add(log)
