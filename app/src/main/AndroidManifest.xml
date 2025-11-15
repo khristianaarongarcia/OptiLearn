@@ -31,6 +31,12 @@
             </intent-filter>
         </activity>
         
+        <!-- Quest Map Transition Activity -->
+        <activity
+            android:name=".QuestMapTransitionActivity"
+            android:label="Loading"
+            android:theme="@style/Theme.OptiLearn" />
+        
         <!-- Quest Map Activity -->
         <activity
             android:name=".QuestMapActivity"

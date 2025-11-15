@@ -1,222 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Vertical Quest Path Node -->
+
+<!-- Optimized Zigzag Quest Path Node -->
+<!-- Proper z-ordering: Vertical line (back) → Branch line (middle) → Circle (front) -->
+
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="220dp"
+    android:layout_height="180dp"
     android:clipChildren="false"
     android:clipToPadding="false">
 
-    <!-- Progress Line - Extends UPWARD from circle center (BEHIND with negative Z) -->
+    <!-- Layer 1: Central Vertical Progress Line (BEHIND) -->
+    <!-- Height extends beyond item to ensure overlap with adjacent items -->
     <View
         android:id="@+id/viewProgressLine"
         android:layout_width="6dp"
-        android:layout_height="220dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="90dp"
+        android:layout_height="190dp"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="-5dp"
         android:background="@drawable/progress_line_locked"
-        android:translationZ="-1dp"
-        android:visibility="gone" />
+        android:elevation="1dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+        
+    <!-- Layer 2: Horizontal Branch Line (MIDDLE) -->
+    <View
+        android:id="@+id/viewBranchLine"
+        android:layout_width="60dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_vertical|start"
+        android:background="@drawable/progress_line_locked"
+        android:elevation="1dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
-    <!-- Level Content Container - Circle centered at 90dp mark (IN FRONT) -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Layer 3: Level Content Container (FRONT) -->
+    <FrameLayout
+        android:id="@+id/levelContentContainer"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginTop="46dp"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:paddingBottom="8dp"
-        android:translationZ="2dp">
+        android:layout_gravity="center"
+        android:elevation="5dp"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
-        <!-- Container with background blocker -->
-        <FrameLayout
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            
-            <!-- Circular blocker background (same color as gradient bg) -->
-            <View
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <!-- Level Circle with Overlays -->
+            <FrameLayout
                 android:layout_width="88dp"
                 android:layout_height="88dp"
-                android:layout_gravity="center_horizontal|top"
-                android:background="@drawable/circle_background_blocker" />
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
-            <!-- Content container positioned below circle -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal">
-
-                <!-- Level Circle Node -->
-                <FrameLayout
+                <!-- Solid Background Blocker (blocks branch lines behind) -->
+                <View
                     android:layout_width="88dp"
-                    android:layout_height="88dp">
+                    android:layout_height="88dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle_background_blocker"
+                    android:elevation="4dp" />
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center"
-                        app:cardCornerRadius="40dp"
-                        app:cardElevation="8dp"
-                        app:cardBackgroundColor="@color/white">
+                <!-- Main Circle Card -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
-                            <!-- Circular Border/Ring for Current Level -->
-                            <View
-                                android:id="@+id/viewHighlightRing"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/circle_border_highlight"
-                                android:visibility="gone"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                        <!-- Highlight Ring for Current Level -->
+                        <View
+                            android:id="@+id/viewHighlightRing"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:background="@drawable/circle_border_highlight"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:visibility="visible" />
 
-                            <!-- Badge Icon (Main Visual) -->
-                            <ImageView
-                                android:id="@+id/ivBadgeIcon"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:src="@drawable/optics_explorer"
-                                android:scaleType="centerInside"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                            
-                            <!-- Fallback Text Icon for levels without PNG icons -->
-                            <TextView
-                                android:id="@+id/tvBadgeIcon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="🔆"
-                                android:textSize="36sp"
-                                android:gravity="center"
-                                android:visibility="gone"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                        <!-- Badge Icon (PNG) -->
+                        <ImageView
+                            android:id="@+id/ivBadgeIcon"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:src="@drawable/optics_explorer" />
 
-                            <!-- Lock Overlay for Locked Levels -->
-                            <ImageView
-                                android:id="@+id/ivLockIcon"
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:src="@drawable/ic_lock"
-                                android:tint="@color/text_secondary"
-                                android:visibility="gone"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
+                        <!-- Badge Icon (Emoji Fallback) -->
+                        <TextView
+                            android:id="@+id/tvBadgeIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="36sp"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:text="🔆"
+                            tools:visibility="gone" />
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <!-- Lock Icon for Locked Levels -->
+                        <ImageView
+                            android:id="@+id/ivLockIcon"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/ic_lock"
+                            android:tint="@color/text_secondary"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:visibility="gone" />
 
-                    </androidx.cardview.widget.CardView>
-                    
-                    <!-- Completion Check Mark - Overlaps circle edge (bottom-left) -->
-                    <TextView
-                        android:id="@+id/tvCompletedMark"
-                        android:layout_width="26dp"
-                        android:layout_height="26dp"
-                        android:background="@drawable/circle_success"
-                        android:gravity="center"
-                        android:text="✓"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:visibility="gone"
-                        android:elevation="8dp"
-                        android:layout_gravity="start|bottom"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginBottom="2dp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <!-- Level Number Badge - Overlaps circle edge (top-right) -->
-                    <TextView
-                        android:id="@+id/tvLevelNumber"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/circle_background"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:elevation="8dp"
-                        android:layout_gravity="end|top"
-                        android:layout_marginEnd="2dp"
-                        android:layout_marginTop="2dp" />
+                </androidx.cardview.widget.CardView>
 
-                </FrameLayout>
-
-                <!-- Level Title and Info -->
+                <!-- Completion Checkmark (Bottom-Left Corner) -->
                 <TextView
-                    android:id="@+id/tvLevelTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Optics Explorer"
-                    android:textSize="14sp"
+                    android:id="@+id/tvCompletedMark"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="start|bottom"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/circle_success"
+                    android:gravity="center"
+                    android:text="✓"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:gravity="center"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:maxWidth="200dp"
-                    android:layout_marginTop="6dp"
-                    android:fontFamily="@font/pixelated_pusab"
-                    android:shadowColor="#80000000"
-                    android:shadowDx="0"
-                    android:shadowDy="2"
-                    android:shadowRadius="4" />
-
-                <!-- High Score (Only for completed levels) -->
-                <TextView
-                    android:id="@+id/tvHighScore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="★ 100%"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/yellow_star"
+                    android:elevation="8dp"
                     android:visibility="gone"
-                    android:layout_marginTop="3dp"
-                    android:fontFamily="@font/pixelated_display"
-                    android:shadowColor="#80000000"
-                    android:shadowDx="0"
-                    android:shadowDy="1"
-                    android:shadowRadius="3" />
+                    tools:visibility="visible" />
 
-                <!-- Status Badge -->
+                <!-- Level Number Badge (Top-Right Corner) -->
                 <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PLAY"
+                    android:id="@+id/tvLevelNumber"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|top"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/circle_background"
+                    android:gravity="center"
                     android:textSize="11sp"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingTop="3dp"
-                    android:paddingBottom="3dp"
-                    android:background="@drawable/badge_unlocked"
-                    android:layout_marginTop="4dp"
-                    android:visibility="visible"
-                    android:fontFamily="@font/pixelated_display" />
+                    android:elevation="8dp"
+                    tools:text="1" />
 
-            </LinearLayout>
+            </FrameLayout>
 
-        </FrameLayout>
+            <!-- Level Title -->
+            <TextView
+                android:id="@+id/tvLevelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:maxWidth="140dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:fontFamily="@font/pixelated_pusab"
+                android:shadowColor="#80000000"
+                android:shadowDx="0"
+                android:shadowDy="2"
+                android:shadowRadius="4"
+                tools:text="Optics Explorer" />
 
-    </LinearLayout>
+            <!-- High Score Display -->
+            <TextView
+                android:id="@+id/tvHighScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@color/yellow_star"
+                android:fontFamily="@font/pixelated_display"
+                android:shadowColor="#80000000"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="3"
+                android:visibility="gone"
+                tools:text="★ 100%"
+                tools:visibility="visible" />
+
+            <!-- Status Badge -->
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/badge_unlocked"
+                android:fontFamily="@font/pixelated_display"
+                android:visibility="visible"
+                tools:text="PLAY" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </FrameLayout>

@@ -66,11 +66,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupClickListeners() {
-        // Play button - Navigate to Quest Map
+        // Play button - Navigate to Quest Map via transition screen
         btnPlay.setOnClickListener {
             SoundManager.playButtonClick()
-            val intent = Intent(this, QuestMapActivity::class.java)
+            val intent = Intent(this, QuestMapTransitionActivity::class.java)
             startActivity(intent)
+            // Smooth fade transition
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
 
         // Trophy Room button
