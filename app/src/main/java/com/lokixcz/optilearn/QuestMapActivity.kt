@@ -2,7 +2,12 @@ package com.lokixcz.optilearn
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -33,6 +38,14 @@ class QuestMapActivity : AppCompatActivity() {
     private lateinit var progressLoading: ProgressBar
     private lateinit var btnBackToMainMenu: TextView
     
+    // Overlay views
+    private lateinit var loadingOverlay: FrameLayout
+    private lateinit var ivTransitionLogo: ImageView
+    private lateinit var tvLoadingText: TextView
+    
+    private val handler = Handler(Looper.getMainLooper())
+    private var isDataLoaded = false
+    
     private lateinit var levelAdapter: LevelAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,6 +73,14 @@ class QuestMapActivity : AppCompatActivity() {
         recyclerViewLevels = findViewById(R.id.recyclerViewLevels)
         progressLoading = findViewById(R.id.progressLoading)
         btnBackToMainMenu = findViewById(R.id.btnBackToMainMenu)
+        
+        // Overlay views
+        loadingOverlay = findViewById(R.id.loadingOverlay)
+        ivTransitionLogo = findViewById(R.id.ivTransitionLogo)
+        tvLoadingText = findViewById(R.id.tvLoadingText)
+        
+        // Start overlay animation
+        startOverlayAnimation()
     }
 
     private fun setupToolbar() {
@@ -134,6 +155,10 @@ class QuestMapActivity : AppCompatActivity() {
                 recyclerViewLevels.post {
                     recyclerViewLevels.scrollToPosition(it.size - 1)
                     DebugLogger.debug("Scrolled to position ${it.size - 1} (Level 1)")
+                    
+                    // Mark data as loaded
+                    isDataLoaded = true
+                    DebugLogger.info("Quest Map data fully loaded - ready to hide overlay")
                 }
             }
         }
@@ -180,5 +205,108 @@ class QuestMapActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         SoundManager.pauseBackgroundMusic()
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // LOADING OVERLAY ANIMATION
+    // ═══════════════════════════════════════════════════════════════
+    
+    private fun startOverlayAnimation() {
+        DebugLogger.info("Starting overlay animation sequence")
+        
+        // Phase 1: Slide in from left to center
+        ivTransitionLogo.translationX = -1000f
+        ivTransitionLogo.alpha = 1f
+        ivTransitionLogo.scaleX = 0.8f
+        ivTransitionLogo.scaleY = 0.8f
+        
+        ivTransitionLogo.animate()
+            .translationX(0f)
+            .setDuration(500L)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                // Phase 2: Enlarge effect
+                enlargeLogo()
+            }
+            .start()
+        
+        // Fade in loading text
+        tvLoadingText.alpha = 0f
+        tvLoadingText.animate()
+            .alpha(1f)
+            .setDuration(500L)
+            .setStartDelay(200L)
+            .start()
+    }
+    
+    private fun enlargeLogo() {
+        DebugLogger.debug("Overlay: Enlarging logo")
+        
+        // Enlarge from 0.8 to 1.2 then settle to 1.0
+        ivTransitionLogo.animate()
+            .scaleX(1.2f)
+            .scaleY(1.2f)
+            .setDuration(200L)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                ivTransitionLogo.animate()
+                    .scaleX(1.0f)
+                    .scaleY(1.0f)
+                    .setDuration(200L)
+                    .withEndAction {
+                        // Phase 3: Wait for data to load
+                        waitForDataThenHideOverlay()
+                    }
+                    .start()
+            }
+            .start()
+    }
+    
+    private fun waitForDataThenHideOverlay() {
+        DebugLogger.debug("Overlay: Waiting for Quest Map data to load...")
+        
+        // Check every 100ms if data is loaded
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                if (isDataLoaded) {
+                    DebugLogger.info("Overlay: Data loaded! Hiding overlay...")
+                    // Add small delay to ensure RecyclerView is fully rendered
+                    handler.postDelayed({
+                        hideOverlay()
+                    }, 300L)
+                } else {
+                    DebugLogger.debug("Overlay: Still waiting for data...")
+                    handler.postDelayed(this, 100L)
+                }
+            }
+        }, 100L)
+    }
+    
+    private fun hideOverlay() {
+        DebugLogger.info("Overlay: Animating slide out")
+        
+        // Fade out loading text
+        tvLoadingText.animate()
+            .alpha(0f)
+            .setDuration(300L)
+            .start()
+        
+        // Slide logo out to the right
+        ivTransitionLogo.animate()
+            .translationX(1000f)
+            .alpha(0f)
+            .setDuration(500L)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction {
+                // Remove overlay completely
+                loadingOverlay.visibility = View.GONE
+                DebugLogger.info("Overlay: Hidden - Quest Map fully visible!")
+            }
+            .start()
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
     }
 }
