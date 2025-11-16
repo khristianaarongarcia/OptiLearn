@@ -275,6 +275,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="8dp"
                 android:backgroundTint="@color/white"
@@ -338,6 +339,182 @@
                         android:lineSpacingExtra="4dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Game Designers Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                android:backgroundTint="@color/white"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Section Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🎮"
+                            android:textSize="28sp"
+                            android:layout_marginEnd="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Game Designers"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/pixelated_pusab"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+
+                    <!-- Designer 1: Bill Reniel A. Ariaso -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="12dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/bill_reniel_a_ariaso"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CircleImageView"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Bill Reniel A. Ariaso"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/pixelated_display"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/surface_light" />
+
+                    <!-- Designer 2: Cherry P. Marañan -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="12dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/cherry_p_maranan"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CircleImageView"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Cherry P. Marañan"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/pixelated_display"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/surface_light" />
+
+                    <!-- Designer 3: Ina E. Villato -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="12dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ina_e_villato"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CircleImageView"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Ina E. Villato"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/pixelated_display"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/surface_light" />
+
+                    <!-- Designer 4: Mary Jessa A. Alvior -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="12dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/mary_jessa_a_alvior"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/CircleImageView"
+                            android:layout_marginEnd="16dp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Mary Jessa A. Alvior"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/pixelated_display"
+                            android:textColor="@color/text_primary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Developer Credit -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Developed by lokixcz"
+                android:textSize="11sp"
+                android:fontFamily="@font/pixelated_display"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:alpha="0.7" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
