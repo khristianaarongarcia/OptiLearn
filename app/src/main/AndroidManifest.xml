@@ -44,6 +44,12 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.OptiLearn" />
         
+        <!-- Quiz Transition Activity -->
+        <activity
+            android:name=".QuizTransitionActivity"
+            android:label="Loading Quiz"
+            android:theme="@style/Theme.OptiLearn" />
+        
         <!-- Quiz Activity -->
         <activity
             android:name=".QuizActivity"

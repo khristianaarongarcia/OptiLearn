@@ -102,14 +102,16 @@ class QuestMapActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         levelAdapter = LevelAdapter(emptyList()) { level ->
-            // Navigate to Quiz Activity
-            val intent = Intent(this, QuizActivity::class.java).apply {
+            // Navigate to Quiz Transition Activity
+            val intent = Intent(this, QuizTransitionActivity::class.java).apply {
                 putExtra(Constants.EXTRA_LEVEL_ID, level.levelId)
                 putExtra(Constants.EXTRA_LEVEL_TITLE, level.title)
                 putExtra(Constants.EXTRA_BADGE_NAME, level.badgeName)
                 putExtra(Constants.EXTRA_BADGE_ICON, level.badgeIcon)
             }
             startActivity(intent)
+            // Smooth fade transition
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
         
         recyclerViewLevels.apply {
@@ -200,6 +202,22 @@ class QuestMapActivity : AppCompatActivity() {
         // Reload data when returning from quiz
         viewModel.loadAllLevels()
         viewModel.loadUserProgress()
+    }
+    
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        
+        // Check if we need to show transition overlay
+        val showTransition = intent?.getBooleanExtra("SHOW_TRANSITION", false) ?: false
+        if (showTransition) {
+            DebugLogger.info("Showing transition overlay on return")
+            // Reset the overlay and show animation
+            loadingOverlay.visibility = View.VISIBLE
+            loadingOverlay.alpha = 1f
+            isDataLoaded = false
+            startOverlayAnimation()
+        }
     }
 
     override fun onPause() {

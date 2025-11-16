@@ -196,6 +196,21 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         return success
     }
     
+    /**
+     * Add OptiHints to user's progress (for streak bonuses)
+     */
+    fun addOptiHints(hints: Int) {
+        viewModelScope.launch {
+            try {
+                val userId = prefManager.getUserId()
+                databaseHelper.addOptiHints(userId, hints)
+                loadUserProgress()
+            } catch (e: Exception) {
+                _error.value = "Failed to add OptiHints: ${e.message}"
+            }
+        }
+    }
+    
     // Badge Operations
     fun loadEarnedBadges() {
         viewModelScope.launch {

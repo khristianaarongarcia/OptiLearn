@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.Gravity
@@ -28,6 +29,7 @@ import com.lokixcz.optilearn.managers.AnimationManager
 import com.lokixcz.optilearn.managers.SoundManager
 import com.lokixcz.optilearn.model.Question
 import com.lokixcz.optilearn.utils.Constants
+import com.lokixcz.optilearn.utils.DebugLogger
 import com.lokixcz.optilearn.viewmodel.GameViewModel
 
 class QuizActivity : AppCompatActivity() {
@@ -45,6 +47,7 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var btnOptionC: MaterialButton
     private lateinit var btnOptionD: MaterialButton
     private lateinit var btnUseOptiHint: AppCompatImageButton
+    private lateinit var tvNoHintsLeft: TextView
     
     // New animation views
     private lateinit var lottieLoading: LottieAnimationView
@@ -68,6 +71,7 @@ class QuizActivity : AppCompatActivity() {
     private var selectedAnswer: String? = null
     private var hasAnswered: Boolean = false
     private var correctStreak: Int = 0
+    private var maxStreak: Int = 0  // Track highest streak achieved in this level
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,6 +105,7 @@ class QuizActivity : AppCompatActivity() {
         btnOptionC = findViewById(R.id.btnOptionC)
         btnOptionD = findViewById(R.id.btnOptionD)
         btnUseOptiHint = findViewById(R.id.btnUseOptiHint)
+        tvNoHintsLeft = findViewById(R.id.tvNoHintsLeft)
         
         // Add animations to buttons
         setupButtonAnimations(btnMenu)
@@ -144,6 +149,13 @@ class QuizActivity : AppCompatActivity() {
             progress?.let {
                 tvHintCount.text = "💡 ${it.optiHints}"
                 setHintButtonEnabled(it.canUseOptiHint() && !hasAnswered)
+                
+                // Show/hide "No hints left" indicator
+                if (it.optiHints == 0) {
+                    tvNoHintsLeft.visibility = View.VISIBLE
+                } else {
+                    tvNoHintsLeft.visibility = View.GONE
+                }
             }
         }
     }
@@ -229,6 +241,11 @@ class QuizActivity : AppCompatActivity() {
             button.setTextColor(Color.WHITE)
             correctAnswers++
             correctStreak++
+            
+            // Track maximum streak achieved
+            if (correctStreak > maxStreak) {
+                maxStreak = correctStreak
+            }
             
             // Add bonus time (30-45 seconds randomly)
             val bonusSeconds = (30..45).random()
@@ -401,6 +418,20 @@ class QuizActivity : AppCompatActivity() {
         // Save progress
         viewModel.completeLevel(levelId, score, isPerfect)
         
+        // Award bonus hints based on max streak achieved
+        val bonusHints = when {
+            maxStreak >= 10 -> 5  // 10+ streak = 5 bonus hints
+            maxStreak >= 7 -> 3   // 7-9 streak = 3 bonus hints
+            maxStreak >= 5 -> 2   // 5-6 streak = 2 bonus hints
+            maxStreak >= 3 -> 1   // 3-4 streak = 1 bonus hint
+            else -> 0             // < 3 streak = no bonus
+        }
+        
+        if (bonusHints > 0) {
+            viewModel.addOptiHints(bonusHints)
+            DebugLogger.info("Streak Bonus: Awarded $bonusHints OptiHints for $maxStreak max streak!")
+        }
+        
         // Navigate to result activity
         val intent = Intent(this, ResultActivity::class.java).apply {
             putExtra(Constants.EXTRA_LEVEL_ID, levelId)
@@ -411,6 +442,8 @@ class QuizActivity : AppCompatActivity() {
             putExtra(Constants.EXTRA_CORRECT_ANSWERS, correctAnswers)
             putExtra(Constants.EXTRA_TOTAL_QUESTIONS, questions.size)
             putExtra(Constants.EXTRA_IS_PERFECT, isPerfect)
+            putExtra("EXTRA_MAX_STREAK", maxStreak)
+            putExtra("EXTRA_BONUS_HINTS", bonusHints)
         }
         startActivity(intent)
         finish()
@@ -418,10 +451,20 @@ class QuizActivity : AppCompatActivity() {
     
     /**
      * Show streak animation in center with fade in/out effect
+     * Applies pixelation effect for retro look
      */
     private fun showStreakAnimation(streak: Int) {
         // Update streak text
         tvStreakCount.text = "🔥 $streak Streak!"
+        
+        // Apply strong pixelation effect - render at very low resolution then scale up
+        val paint = Paint()
+        paint.isAntiAlias = false
+        paint.isFilterBitmap = false
+        paint.isDither = false
+        
+        // Force software rendering for pixelation
+        lottieStreak.setLayerType(View.LAYER_TYPE_SOFTWARE, paint)
         
         // Start Lottie animation
         lottieStreak.playAnimation()
@@ -491,15 +534,29 @@ class QuizActivity : AppCompatActivity() {
         btnRestart.setOnClickListener {
             SoundManager.playButtonClick()
             dialog.dismiss()
-            // Restart by recreating activity
-            recreate()
+            // Restart by launching QuizTransitionActivity again
+            val intent = Intent(this@QuizActivity, QuizTransitionActivity::class.java).apply {
+                putExtra(Constants.EXTRA_LEVEL_ID, levelId)
+                putExtra(Constants.EXTRA_LEVEL_TITLE, levelTitle)
+                putExtra(Constants.EXTRA_BADGE_NAME, badgeName)
+                putExtra(Constants.EXTRA_BADGE_ICON, badgeIcon)
+            }
+            startActivity(intent)
+            finish()
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
         
         // Exit button - go back to quest map
         btnExitQuiz.setOnClickListener {
             SoundManager.playButtonClick()
             dialog.dismiss()
+            // Navigate back to Quest Map with transition flag
+            val intent = Intent(this@QuizActivity, QuestMapActivity::class.java)
+            intent.putExtra("SHOW_TRANSITION", true)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
             finish()
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
         
         // Resume timer if dialog is dismissed by tapping outside
@@ -715,6 +772,12 @@ class QuizActivity : AppCompatActivity() {
     private fun setHintButtonEnabled(enabled: Boolean) {
         btnUseOptiHint.isEnabled = enabled
         btnUseOptiHint.alpha = if (enabled) 1f else 0.5f
+    }
+
+    override fun onBackPressed() {
+        // Show pause menu instead of directly exiting
+        // This provides consistent UX whether using hardware back or menu button
+        showPauseMenu()
     }
 
 }

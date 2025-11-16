@@ -244,11 +244,13 @@ class ResultActivity : AppCompatActivity() {
         
         btnBackToMap.setOnClickListener {
             SoundManager.playButtonClick()
-            // Navigate back to quest map
+            // Navigate back to quest map with transition
             val intent = Intent(this, QuestMapActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.putExtra("SHOW_TRANSITION", true)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             finish()
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
