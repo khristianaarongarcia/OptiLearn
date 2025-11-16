@@ -13,7 +13,7 @@
     android:clipToPadding="false">
 
     <!-- Layer 1: Central Vertical Progress Line (BEHIND) -->
-    <!-- Height extends beyond item to ensure overlap with adjacent items -->
+    <!-- Height will be dynamically adjusted by adapter: full for locked/completed, half for glowing -->
     <View
         android:id="@+id/viewProgressLine"
         android:layout_width="6dp"

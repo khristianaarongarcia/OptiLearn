@@ -276,6 +276,25 @@ class LevelAdapter(
                 }
             }
             
+            // Adjust height for glowing lines only (half height to prevent overflow)
+            val density = context.resources.displayMetrics.density
+            val lineParams = holder.viewProgressLine.layoutParams as android.widget.FrameLayout.LayoutParams
+            if (shouldAnimate) {
+                // Glowing line: extends from center to bottom with proper overlap
+                // Height: 95dp (center=90dp + 5dp overlap with next item)
+                lineParams.height = (113 * density).toInt()
+                lineParams.gravity = android.view.Gravity.CENTER_HORIZONTAL or android.view.Gravity.BOTTOM
+                lineParams.bottomMargin = 0
+                lineParams.topMargin = 0
+            } else {
+                // Non-glowing lines: full height for proper connection
+                lineParams.height = (190 * density).toInt()
+                lineParams.gravity = android.view.Gravity.CENTER_HORIZONTAL or android.view.Gravity.TOP
+                lineParams.topMargin = (-5 * density).toInt()
+                lineParams.bottomMargin = 0
+            }
+            holder.viewProgressLine.layoutParams = lineParams
+            
             // Apply style to both vertical and horizontal lines
             holder.viewProgressLine.setBackgroundResource(lineDrawable)
             if (holder.viewBranchLine.visibility == View.VISIBLE) {
