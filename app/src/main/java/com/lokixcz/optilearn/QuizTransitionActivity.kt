@@ -146,6 +146,8 @@ class QuizTransitionActivity : AppCompatActivity() {
         finish()
     }
 
+    @Suppress("DEPRECATION", "MissingSuperCall")
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         // Disable back button during transition
         // User should not be able to interrupt the animation

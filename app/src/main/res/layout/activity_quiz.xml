@@ -149,6 +149,18 @@
                         android:layout_height="6dp"
                         android:background="@drawable/bg_gradient_blue_game" />
 
+                    <!-- Question Image (Optional) -->
+                    <ImageView
+                        android:id="@+id/ivQuestionImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
+                        android:maxHeight="220dp"
+                        android:padding="16dp"
+                        android:visibility="gone"
+                        android:contentDescription="Question diagram" />
+
                     <TextView
                         android:id="@+id/tvQuestion"
                         android:layout_width="match_parent"

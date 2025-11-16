@@ -107,7 +107,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val level = databaseHelper.getLevelById(levelId)
-                _currentLevel.value = level
+                _currentLevel.value = level ?: return@launch
             } catch (e: Exception) {
                 _error.value = "Failed to load level: ${e.message}"
             }

@@ -14,5 +14,6 @@ data class QuestionEntity(
     val optionC: String,
     val optionD: String,
     val correctAnswer: String, // A, B, C, or D
-    val explanation: String = ""
+    val explanation: String = "",
+    val imageResource: String? = null // Optional image resource name
 )

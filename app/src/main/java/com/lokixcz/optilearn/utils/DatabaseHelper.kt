@@ -203,7 +203,8 @@ class DatabaseHelper(context: Context) {
                     optionC = entity.optionC,
                     optionD = entity.optionD,
                     correctAnswer = entity.correctAnswer,
-                    explanation = entity.explanation
+                    explanation = entity.explanation,
+                    imageResource = entity.imageResource
                 )
             }
         }
@@ -227,7 +228,8 @@ class DatabaseHelper(context: Context) {
                     optionC = entity.optionC,
                     optionD = entity.optionD,
                     correctAnswer = entity.correctAnswer,
-                    explanation = entity.explanation
+                    explanation = entity.explanation,
+                    imageResource = entity.imageResource
                 )
             }
         }

@@ -42,6 +42,7 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var tvTimer: TextView
     private lateinit var tvTimeBonus: TextView
     private lateinit var tvQuestion: TextView
+    private lateinit var ivQuestionImage: ImageView
     private lateinit var btnOptionA: MaterialButton
     private lateinit var btnOptionB: MaterialButton
     private lateinit var btnOptionC: MaterialButton
@@ -100,6 +101,7 @@ class QuizActivity : AppCompatActivity() {
         tvTimer = findViewById(R.id.tvTimer)
         tvTimeBonus = findViewById(R.id.tvTimeBonus)
         tvQuestion = findViewById(R.id.tvQuestion)
+        ivQuestionImage = findViewById(R.id.ivQuestionImage)
         btnOptionA = findViewById(R.id.btnOptionA)
         btnOptionB = findViewById(R.id.btnOptionB)
         btnOptionC = findViewById(R.id.btnOptionC)
@@ -205,6 +207,38 @@ class QuizActivity : AppCompatActivity() {
         
         // Update question counter
         updateQuestionCounter()
+        
+        // Display question image if available
+        if (!question.imageResource.isNullOrEmpty()) {
+            val imageResId = resources.getIdentifier(question.imageResource, "drawable", packageName)
+            if (imageResId != 0) {
+                ivQuestionImage.setImageResource(imageResId)
+                ivQuestionImage.visibility = View.VISIBLE
+                // Reduce question text padding when image is present
+                tvQuestion.setPadding(
+                    tvQuestion.paddingLeft,
+                    16,
+                    tvQuestion.paddingRight,
+                    tvQuestion.paddingBottom
+                )
+            } else {
+                ivQuestionImage.visibility = View.GONE
+                tvQuestion.setPadding(
+                    tvQuestion.paddingLeft,
+                    28,
+                    tvQuestion.paddingRight,
+                    tvQuestion.paddingBottom
+                )
+            }
+        } else {
+            ivQuestionImage.visibility = View.GONE
+            tvQuestion.setPadding(
+                tvQuestion.paddingLeft,
+                28,
+                tvQuestion.paddingRight,
+                tvQuestion.paddingBottom
+            )
+        }
         
         // Display question and options
         tvQuestion.text = question.questionText
@@ -505,9 +539,9 @@ class QuizActivity : AppCompatActivity() {
         
         // Initialize dialog views
         val btnClosePause = dialog.findViewById<ImageView>(R.id.btnClosePause)
-    val btnResume = dialog.findViewById<AppCompatImageButton>(R.id.btnResume)
-    val btnRestart = dialog.findViewById<AppCompatImageButton>(R.id.btnRestart)
-    val btnExitQuiz = dialog.findViewById<AppCompatImageButton>(R.id.btnExitQuiz)
+        val btnResume = dialog.findViewById<AppCompatImageButton>(R.id.btnResume)
+        val btnRestart = dialog.findViewById<AppCompatImageButton>(R.id.btnRestart)
+        val btnExitQuiz = dialog.findViewById<AppCompatImageButton>(R.id.btnExitQuiz)
         
         // Add hover and click effects to buttons
         setupButtonAnimations(btnResume)
@@ -774,6 +808,8 @@ class QuizActivity : AppCompatActivity() {
         btnUseOptiHint.alpha = if (enabled) 1f else 0.5f
     }
 
+    @Suppress("DEPRECATION", "MissingSuperCall")
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         // Show pause menu instead of directly exiting
         // This provides consistent UX whether using hardware back or menu button

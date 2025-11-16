@@ -1,3 +1,4 @@
+
 Level 1: Optics Explorer
 1. Light is a natural agent that stimulates ______ and makes things possible.
 A. Hearing
@@ -53,6 +54,7 @@ A. Travels slowly through the air
 B. Is absorbed by the eyes directly
 C. Reflects off objects into our eyes
 D. Passes through solid materials
+
 Level 2: Reflection Rookie
 1. The Law of Reflection states that the angle of incidence (i) is _____.
 A. Always greater than the angle of reflection
@@ -81,11 +83,12 @@ A. virtual
 B. real
 C. magnified
 D. specular
+
 Level 3: Ray Tracker
-1. Reflection that forms clear images occurs on ______ surfaces.
+1. [IMAGE:level3_q1]
+Reflection that forms clear images occurs on ______ surfaces.
 A. Rough
 B. Smooth
-Reflection of a Light ray on a Plane
 C. Curved
 D. Transparent
 2. The line drawn perpendicular to the reflecting surface at the point of incidence is
@@ -110,8 +113,10 @@ A. At right angles
 B. In different planes
 C. Randomly
 D. In the same plane
+
 Level 4: Mirror Mapper
-1. What type of image is formed by a plane mirror?
+1. [IMAGE:level4_q1]
+What type of image is formed by a plane mirror?
 A. Real
 B. Inverted
 C. Enlarged
@@ -136,12 +141,12 @@ A. Produce sound
 B. Absorb heat
 C. See the object
 D. Block the light
+
 Level 5: Reflection Specialist
-1. What happens in diffused reflection?
+1. [IMAGE:level5_q1]
+What happens in diffused reflection?
 A. Light reflects in one direction
 B. Light scatters in many directions
-(a) Specular/Regular (b) Diffused/Irregular
-Types of Reflection of Light
 C. Light is absorbed
 D. Light passes through
 2. Reflection from a smooth surface is called _____.
@@ -164,8 +169,10 @@ A. Specular reflection
 B. Diffused reflection
 C. Irregular reflection
 D. Scattered reflection
+
 Level 6: Lateral Inverter
-1. Why is the word “AMBULANCE” written in reverse on the front of ambulances?
+1. [IMAGE:level6_q1]
+Why is the word "AMBULANCE" written in reverse on the front of ambulances?
 A. For decoration
 B. To look unique
 C. So it appears correctly in a rear-view mirror
@@ -191,16 +198,14 @@ A. The image raises its right hand
 B. The image raises its left hand
 C. The image raises both hands
 D. The image doesn’t move
+
 Level 7: Curved Mirror Champion
-1. What are mirrors with a curved surface called?
+1. [IMAGE:level7_q1]
+What are mirrors with a curved surface called?
 A. Plane mirrors
 B. Flat mirrors
 C. Spherical mirrors
 D. Parabolic mirrors
-(a) Concave / Converging
-Mirror
-Two Kinds of Spherical Mirrors
-(b) Convex / Diverging Mirror
 2. A concave mirror is also known as a ____ mirror.
 A. Diverging
 B. Converging
@@ -221,6 +226,7 @@ A. They spread out or diverge
 B. They focus at a point
 C. They get absorbed
 D. They reflect inward
+
 Level 8: Image Identifier
 1. When light rays after reflection, what type of image is formed?
 A. Real image
@@ -247,8 +253,10 @@ A. Virtual image
 B. Real image
 C. Enlarged image
 D. Magnified image
+
 Level 9: Plane Mirror Pro
-1. Where does the image formed by a plane mirror appear?
+1. [IMAGE:level9_q1]
+Where does the image formed by a plane mirror appear?
 A. In front of the mirror
 B. On the surface of the mirror
 C. Behind the mirror
@@ -273,8 +281,10 @@ A. By absorption of light
 B. By reflection of light rays that appear to meet behind the mirror
 C. By refraction of light through glass
 D. By scattering of light in all directions
+
 Level 10: Focal Finder
-1. What is the orientation of an image formed by a plane mirror?
+1. [IMAGE:level10_q1]
+What is the orientation of an image formed by a plane mirror?
 A. Inverted
 B. Laterally inverted
 C. Upright
@@ -300,6 +310,7 @@ A. Center of Curvature (C)
 B. Radius of Curvature (R)
 C. Focal Length (f)
 D. Principal Axis
+
 Level 11: Real or Virtual?
 REAL OR VIRUAL
 Which type of image can always be projected onto a screen?
@@ -319,6 +330,7 @@ An image that is formed on the same side of a mirror as the object (in front) is
 considered a:
  A. Real Image
  B. Virtual Image
+
 Level 12: Mirror Match
 Plane Mirror, Concave Mirror, Convex Mirror (button with these three option each
 number)
@@ -333,6 +345,7 @@ Answer Key
 3. Plane Mirror
 4. Plane Mirror
 5. Concave Mirror
+
 Level 13: Lens Learner
 CONCAVE LENS or CONVEX LENS (2 BUTTON OPTION)
 1. In which lens does the curve face inward?
@@ -346,6 +359,7 @@ Answer
 3. Concave Lens
 4. Convex Lens
 5. Convex Lens
+
 Level 14: Mirror Life
 CONCAVE MIRROR or CONVEX MIRROR (2 BUTTON OPTION)
 No. Object Type of Mirror
@@ -354,6 +368,7 @@ No. Object Type of Mirror
 3. Inner surface of glasses Concave
 4. Lunch plates Concave
 5. Globe Convex
+
 Level 15: Final Quest
 1. Light is a form of energy that can travel even through a vacuum because it is ______.
 A. Chemical energy
